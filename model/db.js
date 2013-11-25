@@ -5,7 +5,7 @@ var mongoose 		= 		require('mongoose'),
 	Schema 			= 		mongoose.Schema;
 
 // Connect to the database
-var dbUriString = 	process.env.MONGOLAB_URI || process.env.MONGOHQ_URL  || 'mongodb://localhost/diggsurvey';
+var dbUriString	 	= 	process.env.MONGOLAB_URI || process.env.MONGOHQ_URL  || 'mongodb://localhost/simpoll_shopify';
 mongoose.connect(dbUriString, function (err, conn) {
 	if (err) { 
 		console.log ('ERROR connecting to: ' + dbUriString + '. ' + err);

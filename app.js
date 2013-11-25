@@ -1,18 +1,14 @@
-
 /**
  * Module dependencies.
  */
-
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path');
-
-var app = express();
+var nodify    = require('nodify-shopify'),
+    express   = require('express'),
+    http      = require('http'), 
+    path      = require('path'),
+    app       = express();
 
 app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
+  app.set('port', process.env.PORT || 5000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());
@@ -24,11 +20,12 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler());
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+app.configure('production', function(){
+  app.use(express.errorHandler()); 
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
