@@ -1,0 +1,15 @@
+{
+  "name": "simpoll_shopify",
+  "description": "Simplified product reviews for Shopify Shops",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "3.1.0",
+    "jade": "*",
+    "stylus": "*",
+    "mongoose": "*",
+    "nodify-shopify": "*"
+  }
+}
