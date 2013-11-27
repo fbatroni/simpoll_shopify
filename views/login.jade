@@ -3,7 +3,7 @@ extends layout
 block pagespecificstyles
       link(rel="stylesheet"
         type="text/css"
-        href="/stylesheets/index.css")
+        href="/stylesheets/login.css")
 
 block content
   .container
@@ -31,6 +31,8 @@ block content
       .col-lg-12
           h1(style='text-align: center; color: #16AD1C;') Login to your Account
       .col-lg-12
+        if hasError
+          p.lead.errorInfo Bad Login, Try Again :(
         form(role='form', action='/login', method='post')
           .form-group
             input.form-control(type='text', name='shop', placeholder='Your Shop Name e.g. myshoeshop')
