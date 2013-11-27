@@ -10,6 +10,8 @@
     "jade": "*",
     "stylus": "*",
     "mongoose": "*",
-    "nodify-shopify": "*"
+    "nodify-shopify": "git://github.com/Shopfrogs/Nodify.git",
+    "moment": "*",
+    "async": "*"
   }
 }
