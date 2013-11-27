@@ -1,10 +1,10 @@
 /**
  *
  * @Name	cronjobs
- * @Author 	Samuel A.
+ * @Author 	S. A.
  * @Date	27 11 14
  * @Purpose	cron stuff
- *
+ * @Doc     scroll down to see mini documentation
  **/
 
 // MAKE CRON LIBRARY AVAILABLE
@@ -59,24 +59,35 @@ var High_Priest = {
 } // end Object High_Priest
 
 
+// PUBLISH TO WORLD
 exports.Cron_Priest = High_Priest;
 
 
-		/** HOW TO USE cronjobs.js **/
-/*
- * 1. Require the cronjobs.js module as follows;
-	  var job = require('./helpers/cronjobs').Cron_Priest.recurrin_job({});
-	  Passing an an object to the recurring_job or the one_time_job function
-	  You can pass an empty Object to use the defaults which are as follows
-	  a) Job is run every minute
-	  b) Calls a default handler which prints a message to the console
-	  b) Uses the American/Los Angeles time zone
-	  c) For a one time job, the job is started immediately, but for a recurring one, start() has to be called on the job to start
 
- * 2. Finally, call job.start() to begin the job
+
+
+				/** HOW TO USE cronjobs.js
+
+   1. Require the cronjobs.js module as follows;
+
+	  var job = require('./helpers/cronjobs').Cron_Priest.one_time_job({});
+	  	OR
+	  var job = require('./helpers/cronjobs').Cron_Priest.recurrin_job({});
+
+	  Passing an object to the recurring_job or the one_time_job function
+	  You can pass an empty Object to use the defaults which are as follows
+
+	  a) time     : Job is run every minute
+	  b) handler  : Calls a default handler which prints a message to the console
+	  b) timeZone : Uses the American/Los Angeles time zone
+	  c) start    : For a one time job, the job is started immediately
+	                But for a recurring job, start() has to be called on the job to start
+
+   2. Finally, call job.start() to begin the job
  	  NB: This is for a recurring job, or a one time job for which you specify start as false
 
- */
+
+**/
 
 
 
