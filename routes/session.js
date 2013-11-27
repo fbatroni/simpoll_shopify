@@ -1,7 +1,8 @@
 // Dependencies
 var Pass = require('../helpers/password'),
 	Shop = require('../model/shop'),
-	Product = require('../model/product');
+	Product = require('../model/product'),
+	step = require('async');
 
 var init = function(app, config) {
 	// Signup - Show Signup Form
@@ -43,10 +44,40 @@ var init = function(app, config) {
 	// Signup - Merchant clicked install, start the authentication process
 	app.post('/signup/install', authenticate);
 
-	// Login
+	// Login - Show login form
 	app.get('/login', function (req, res) {
 		res.render('login', {
-			title: 'Welcome'
+			title: 'Simpoll - Login to your account',
+			shop: null
+		});
+	});
+
+	// Signup - Form submitted, create shop
+	app.post('/login', function (req, res) {
+		step.waterfall([
+		    function(callback){
+		    	Shop.findByName(req.body.shop, function (err, shop) {
+		    		if (err) callback(err);
+		    		else if (!shop) callback(null, false, null); // Second argument specifies whether the shop exists or not. Third specifies an object representing the shop 
+		    		else {
+		    			var isValidLogin = Pass.validate(shop.password, req.body.password);
+		    			if (isValidLogin) callback(null, true, shop);
+		    			else callback(null, false, null);
+		    		}
+		    	});
+		    }
+		], function (err, validLogin, _shop) {
+			if (err || (!validLogin)) {
+				res.redirect('/login');
+			}
+			else {
+				req.session.shop = {
+					name: _shop.name,
+					token: _shop.token,
+					url: _shop.url
+				};
+				res.redirect('/');
+			}
 		});
 	});
 
