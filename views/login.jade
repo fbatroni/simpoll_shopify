@@ -29,12 +29,14 @@ block content
           | Simpoll Reviews
     .row.install
       .col-lg-12
-          h1(style='text-align: center; color: #16AD1C;') Install the Awesome!
+          h1(style='text-align: center; color: #16AD1C;') Login to your Account
       .col-lg-12
-        form(role='form', action='/login/authenticate', method='post')
+        form(role='form', action='/login', method='post')
           .form-group
-            input.form-control(type='text', name='shop', placeholder='Shop Name')
-          button.btn.btn-success.btn-block(type='submit') Install
+            input.form-control(type='text', name='shop', placeholder='Your Shop Name e.g. myshoeshop')
+          .form-group
+            input.form-control(type='password', name='password', placeholder='Enter your password')
+          button.btn.btn-success.btn-block(type='submit') Login
     .footer
       .col-lg-6.copyright
         div © 2013 PayButtonAfrica.
