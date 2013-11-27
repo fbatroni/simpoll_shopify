@@ -57,22 +57,6 @@ var init = function(app, config) {
 				});
 			}
 		});
-
-		// var shop = {
-		// 	name: req.body.shop.replace(".myshopify.com",''),
-		// 	password: Pass.hash(req.body.password)
-		// }
-		// Shop.save(shop, function (err, theShop) {
-		// 	if (err) res.send('An error occurred');
-		// 	else {
-		// 		req.session.shop = {
-		// 			name: theShop.name,
-		// 			token: null,
-		// 			url: null
-		// 		};
-		// 		res.redirect('/signup/install')
-		// 	}
-		// });
 	});
 }
 
