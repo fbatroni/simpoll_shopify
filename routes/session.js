@@ -46,9 +46,11 @@ var init = function(app, config) {
 
 	// Login - Show login form
 	app.get('/login', function (req, res) {
+		var badLogin = (req.query.status == 'badLogin') ? true : false;
 		res.render('login', {
 			title: 'Simpoll - Login to your account',
-			shop: null
+			shop: null,
+			hasError: badLogin
 		});
 	});
 
@@ -68,7 +70,7 @@ var init = function(app, config) {
 		    }
 		], function (err, validLogin, _shop) {
 			if (err || (!validLogin)) {
-				res.redirect('/login');
+				res.redirect('/login' + '?status=badLogin');
 			}
 			else {
 				req.session.shop = {
