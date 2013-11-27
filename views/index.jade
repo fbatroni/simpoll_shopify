@@ -1,5 +1,21 @@
 extends layout
 
+block pagespecificstyles
+      link(rel="stylesheet"
+        type="text/css"
+        href="/stylesheets/index.css")
+
 block content
-  h1= title
-  p Welcome to #{title}
+  .container
+    include header
+    .jumbotron
+      h1 Collect More Reviews
+        p.lead
+          | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+        p
+          a.btn.btn-lg.btn-success(href='/signup', role='button') Get Started
+    .footer
+      .col-lg-6.copyright
+        div © 2013 PayButtonAfrica.
+      .col-lg-6.navup.align-right
+        a(href='#') Back to top

@@ -1,0 +1,82 @@
+extends layout
+
+block pagespecificstyles
+      link(rel="stylesheet"
+        type="text/css"
+        href="/stylesheets/preferences.css")
+
+block content
+  .container
+    include header
+    .row.preferences
+      .col-lg-12
+        h1(style='text-align: center; color: #16AD1C;') Customize your preferences.
+      .col-lg-12.viewport
+        form(role='form', name='preferences_form', action='/preferences/new', method='POST')
+          .col-lg-12.email
+            .header
+              h1.header-text
+                i.fa.fa-envelope-o.icon
+                | Post-Purchase Email Settings
+            .body
+                .row.mail-headers
+                  .col-xs-12.col-sm-12.col-md-3.lead-time
+                    label(for='') Send After (days)
+                    input.form-control(type='number', value='#{preferences.leadTime}', min='1', max='31', name='leadTime')
+                  .col-xs-12.col-sm-12.col-md-9.message-subject
+                    label(for='') Message Subject
+                    input.form-control(type='text', value='#{preferences.messageSubject}', name='messageSubject')
+                  .col-xs-12.message-sender
+                    label(for='') Show message as sent from
+                    input.form-control(name='showAsSentFrom', type='text', value='#{preferences.showAsSentFrom}')
+                .row.mail-body
+                  .form-group.message-greeting
+                    label(for='') Message Greeting
+                    input.form-control(name='messageGreeting', type='text', value='#{preferences.messageGreeting}')
+                  .form-group.message-body
+                    label(for='') Message Body
+                    textarea.form-control(name='messageBody', placeholder='', rows='4')
+                      | #{preferences.messageBody}
+                  .form-group
+                    label(for='') Message Signature
+                    textarea.form-control(name='messageSignature', placeholder='', rows='4')
+                      | #{preferences.messageSignature}
+          .col-lg-12.publishing
+            .header
+              h1.header-text
+                i.fa.fa-rss-square.icon
+                | Where should we publish your reviews?
+            .body
+              .row.publish-outlets
+                ul.outlet-list
+                  li
+                    label.checkbox-inline
+                      if preferences.publishToShop
+                        input(name='publishToShop', type='checkbox', value='yes', checked='checked')
+                        | My Shopify Store
+                      else
+                        input(name='publishToShop', type='checkbox', value='yes')
+                        | My Shopify Store
+
+          .col-lg-12.notifications
+            .header
+              h1.header-text
+                i.fa.fa-globe.icon
+                | Setup Your Notifications
+            .body
+              .row
+                .col-xs-12.notify
+                  .form-group
+                    label.checkbox-inline
+                      if preferences.notifyByMail
+                        input(name='notifyByMail', type='checkbox', value='yes', checked='checked')
+                        | Notify me by mail when a new review is submitted
+                      else
+                        input(name='notifyByMail', type='checkbox', value='yes')
+                        | Notify me by mail when a new review is submitted
+                  button.btn.btn-info.save-changes(type='submit') Save Changes
+    .footer
+      .col-lg-6.copyright
+        div © 2013 PayButtonAfrica.
+      .col-lg-6.navup.align-right
+        a(href='#') Back to top

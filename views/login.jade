@@ -1,0 +1,42 @@
+extends layout
+
+block pagespecificstyles
+      link(rel="stylesheet"
+        type="text/css"
+        href="/stylesheets/index.css")
+
+block content
+  .container
+    .header
+      ul.nav.nav-pills.pull-right
+        li.dropdown.active
+          a#drop2.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
+              | Shoeshop-7
+              b.caret
+            ul.dropdown-menu(role='menu', aria-labelledby='drop2')
+              li(role='presentation')
+                a(role='menuitem', tabindex='-1', href='http://twitter.com/fat') Action
+              li(role='presentation')
+                a(role='menuitem', tabindex='-1', href='http://twitter.com/fat') Another action
+              li(role='presentation')
+                a(role='menuitem', tabindex='-1', href='http://twitter.com/fat') Something else here
+              li.divider(role='presentation')
+              li(role='presentation')
+                a(role='menuitem', tabindex='-1', href='http://twitter.com/fat') Separated link
+      h3.text-muted(style="display: inline-block")
+        a#pay-africa-button.btn.btn-success.btn-lg.pay-button-green(href='')
+          i.fa.fa-smile-o&nbsp;
+          | Simpoll Reviews
+    .row.install
+      .col-lg-12
+          h1(style='text-align: center; color: #16AD1C;') Install the Awesome!
+      .col-lg-12
+        form(role='form', action='/login/authenticate', method='post')
+          .form-group
+            input.form-control(type='text', name='shop', placeholder='Shop Name')
+          button.btn.btn-success.btn-block(type='submit') Install
+    .footer
+      .col-lg-6.copyright
+        div © 2013 PayButtonAfrica.
+      .col-lg-6.navup.align-right
+        a(href='#') Back to top

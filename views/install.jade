@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  .container
+    include header
+    .jumbotron
+      h2 Your account was created successfully
+        p.lead
+          | Use the button below to install the app
+        form(role='form', action='/signup/install', method='post')
+          input(type='hidden', name='shop', value='#{shop.name}')
+          button.btn.btn-success.btn-lg(type='submit') Install Simpoll
+    .footer
+      .col-lg-6.copyright
+        div © 2013 PayButtonAfrica.
+      .col-lg-6.navup.align-right
+        a(href='#') Back to top
