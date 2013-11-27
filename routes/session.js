@@ -1,6 +1,7 @@
 // Dependencies
 var Pass = require('../helpers/password'),
-	Shop = require('../model/shop');
+	Shop = require('../model/shop'),
+	Product = require('../model/product');
 
 var init = function(app, config) {
 	// Signup - Show Signup Form
@@ -68,6 +69,20 @@ var init = function(app, config) {
 		}
 	}
 
+	function fetchProducts (shop, key, callback) {
+		config.session.active = config.nodify.createSession(shop, config.apiKey, config.secret, key);
+		if(config.session.active.valid()){
+			console.log('session is valid for <',shop,'>');
+			config.session.active.product.all({}, function(err, products){
+				if(err) callback(err);
+				else {
+					console.log('products:',products);
+					callback(null, products);
+				}
+			});
+		} 
+	}
+
 	// Exchange temporary token for a permanent one
 	app.get('/login/finalize/token', function(req, res) {
 		if(! req.query.code) {
@@ -88,16 +103,28 @@ var init = function(app, config) {
 			Shop.findAndUpdate(query, { 
 				token: token, 
 				url: config.session.active.url
-			}, {}, function (err, affectedRows) {
+			}, {}, function (err, shop) {
 				if (err) throw err;
-				console.log(affectedRows + 'documents updated');
-				res.redirect('/preferences/new');
+				console.log(shop + ' updated');
+				fetchProducts(req.session.shop.name, req.session.shop.token,
+				 function (err, products) {
+				 	var _products = [];
+				 	products.forEach(function (item, index) {
+				 		_products.push({
+				 			id: item.id,
+				 			name: item.title,
+				 			imageUrl: item.image.src
+				 		});
+				 	});
+
+				 	Shop.saveProducts(shop, _products, function (err) {
+				 		if (err) res.send('Error saving products');
+				 		else {
+				 			res.redirect('/preferences/new');
+				 		}
+				 	});
+				 });
 			});
-
-
-			// Model.findOneAndUpdate(query, { name: 'jason borne' }, options, callback);
-			// config.persistentKeys[config.session.active.store_name]=token;
-			// req.session.shopify = {shop:config.session.active.store_name};
 		});
 	})
 };
