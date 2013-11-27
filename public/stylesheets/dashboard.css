@@ -1,0 +1,214 @@
+.navbar .nav-items-wrapper,
+.dashbody {
+  width: 85%;
+}
+.dashbody {
+	margin-top: 2.3em;
+}
+.dashbody .box-highlight {
+	border: 0px solid #eee;
+	font-family: 'Open Sans', sans-serif;
+	color: #fff;
+}
+.dashbody .box-highlight .details {
+	border: 0px solid #bbb;
+	min-height: 8em;
+}
+.dashbody .box-highlight .action {
+	border: 0px solid #eee;
+	padding: 0.3em;
+	min-height: 2.2em;
+	color: #f7f7f7;
+}
+.box-highlight .action .arrow-holder {
+	text-align: right;
+}
+
+.box-highlight .description {
+	text-align: right;
+}
+.box-highlight .description span {
+	display: block;
+}
+.box-highlight .description .stat {
+	font-weight: 300;
+	font-size: 2.5em;
+}
+.box-highlight .description .stat-label {
+	font-weight: 300;
+	font-size: 1.3em;
+}
+.box-highlight .view-more:link,
+.box-highlight .view-more:visited {
+	text-transform: uppercase;
+	font-size: 0.9em;
+	color: #D9DADB;
+}
+.box-highlight .view-more:hover,
+.box-highlight .view-more:active {
+	text-decoration: none;
+	color: #f1f2f3;
+}
+.box-highlight .view-more-arrow:link,
+.box-highlight .view-more-arrow:visited {
+	color: #f1f2f3;
+	text-align: right;
+}
+
+.box-highlight .details .icon-holder,
+.box-highlight .details .description {
+	position: relative;
+	top: 1.3em;
+}
+
+.one {
+	background-color: #27a9e3;
+}
+.one .action {
+	background-color: #208dbe;
+}
+.one .action:hover {
+	background-color: #1D7FAB;
+}
+.two {
+	background-color: #28b779;
+}
+.two .action {
+	background-color: #10a062;
+}
+.two .action:hover {
+	background-color: #0E9058;
+}
+.three {
+	background-color: #852b99;
+}
+.three .action {
+	background-color: #6e1881;
+}
+.three .action:hover {
+	background-color: #631674;
+}
+.four {
+	background-color: #FA2B2B;
+}
+.four .action {
+	background-color: #AF1E1E;
+}
+.four .action:hover {
+	background-color: #9E1B1B;
+}
+
+
+
+.top-reviewers {
+	margin-top: 2em;
+}
+
+.top-products {
+	margin-top: 0.5em;
+}
+
+.top-products .products {
+	/*border: 1px solid #bbb;*/
+}
+.products .header {
+	border: 0px solid #bbb;
+	padding: 0.7em;
+	/*padding-bottom: 0.6em;*/
+	background-color: #cb871b;
+	color: #fff;
+	font-weight: 300;
+}
+.products .header .header-text {
+	margin: 0;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 1.1em;
+}
+.products .body {
+	border: 1px solid #cb871b;
+	padding: 1.5em;
+	/*padding-bottom: 0.5em;*/
+}
+.products .product-list .col {
+	text-align: center;
+}
+.products .product {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+}
+.products .product .name {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 1.3em;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+}
+.products .product .reviews {
+	font-weight: bold;
+}
+.products .product .rating {
+	/*font-weight: bold;*/
+	font-size: 1.2em;
+}
+.rating-smile {
+	color: #5cb85c;
+}
+.rating-frown {
+	color: #D83934;
+}
+
+
+/*Style table border color*/
+.table-bordered > thead > tr > th, 
+.table-bordered > tbody > tr > th, 
+.table-bordered > tfoot > tr > th, 
+.table-bordered > thead > tr > td, 
+.table-bordered > tbody > tr > td, 
+.table-bordered > tfoot > tr > td {
+	border: 1px solid #808080;
+	font-family: Raleway, 'Open Sans', sans-serif;
+	/*text-align: center;*/
+}
+
+.top-reviewers .header  {
+	background-color: #808080;
+	color: #fff;
+}
+.top-reviewers .header .header-text {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 1.1em;
+}
+
+.circle-highlights {
+	border: 0px solid #bbb;
+	margin-top: 2.5em;
+}
+.circle-highlight {
+	border: 0px solid #bbb;
+	width: 50%;
+	text-align: center;
+	margin: 0 auto;
+}
+.circle-highlight .value {
+	border: 1px solid transparent;
+	width: 110px;
+	height: 110px;
+	border-radius: 50%;
+	color: #fff;
+	/*background-color: #27a9e3;*/
+	margin: 0 auto;
+}
+.circle-highlight .value p {
+    text-align: center;
+    margin-top: 40px;
+    font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 1.5em;
+}
+.circle-highlight .description {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 1.2em;
+}
