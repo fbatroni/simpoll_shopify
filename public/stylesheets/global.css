@@ -1,0 +1,38 @@
+#pay-africa-button {
+	font-family: sans-serif;
+	padding-left: 1em;
+	padding-right: 1em;
+	color: #fff;
+	border-width: 0;
+}
+.pay-button-yellow {
+	background-color: #C9B90D;
+	border-color: #C9B90D;
+}
+.pay-button-yellow:hover,
+.pay-button-yellow:active {
+	background-color: #B5A60C;
+	border-color: #B5A60C;
+}
+.pay-button-green {
+	background-color: #A3CC29;
+	border-color: #A3CC29;
+}
+.pay-button-green:hover,
+.pay-button-green:active {
+	background-color: #93B825;
+	border-color: #93B825;
+}
+#pay-africa-button .bitcoin-glyph {
+	color: #fff;
+	margin-right: 0.3em;
+}
+.show-outline {
+	border: 1px solid #bbb;
+}
+.align-right {
+	text-align: right;
+}
+.align-left {
+	text-align: left;
+}

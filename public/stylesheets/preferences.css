@@ -1,0 +1,70 @@
+.dashbody .viewport {
+	border: 0px solid #bbb;
+	margin-top: 1.5em;
+}
+.viewport .header {
+	border: 1px solid #ddd;
+	background-color: #F0EFEF;
+	padding-left: 1em;
+	-webkit-box-shadow: 1px 1px 1px rgba(190, 190, 190, 0.50);
+	-moz-box-shadow:    1px 1px 1px rgba(190, 190, 190, 0.50);
+	box-shadow:         1px 1px 1px rgba(190, 190, 190, 0.50);
+	border-radius: 2px;
+}
+.viewport .header .header-text {
+	font-size: 22px;
+	margin: 0.7em 0.7em 0.7em 0.7em;
+	font-family: exo, sans-serif;
+}
+.viewport .body {
+	padding-top: 1em;
+}
+.viewport .body .mail-headers .message-sender {
+	margin-top: 5.0em;
+}
+.viewport .body .lead-time,
+.viewport .body .message-subject {
+	/*padding-left: 0;*/
+	/*padding-right: 0;*/
+}
+.viewport .body .message-subject {
+	/*padding-right: 0;*/
+}
+.viewport .body .message-body {
+	margin-top: 1em;
+	border: 0px solid #f00;
+}
+.viewport .body .mail-body {
+	border: 0px solid #bbb;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+
+
+.viewport .body .publish-outlets {
+	border: 0px solid #bbb;
+	margin-left: 0;
+	margin-right: 0;
+}
+.viewport .body .outlet-list {
+	list-style: none;
+	padding-left: 0;
+}
+
+.save-changes {
+	margin-top: 1em;
+}
+
+
+@media (max-width: 992px) {
+	.viewport .body .mail-headers .message-sender {
+		margin-top: 0.7em;
+		/*color: #f00;*/
+	}
+}
+
+.publishing,
+.notifications {
+	margin-top: 1.5em;
+}
