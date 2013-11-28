@@ -14,6 +14,7 @@
     "moment": "*",
     "async": "*",
     "cron": "*",
-    "time": "*"
+    "time": "*",
+    "mandrill-api": "*"
   }
 }
