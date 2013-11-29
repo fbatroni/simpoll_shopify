@@ -37,7 +37,7 @@ var High_Priest = {
 
 	recurrin_job : function(_args) {
 		_args = _args || {};
-
+		console.log('Job starting...');
 		return new cronJob({
 			cronTime : _args.run_at   || High_Priest.BY_MINUTE,
 			onTick	 : _args.handler  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},

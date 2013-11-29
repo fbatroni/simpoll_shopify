@@ -67,4 +67,5 @@ routeFiles.forEach(function(file) {
 // Start The Server
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
+  var jobs = require('./tasks/queue');
 });

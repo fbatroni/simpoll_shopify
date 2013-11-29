@@ -150,12 +150,17 @@ var init = function(app, config) {
 				 		});
 				 	});
 
-				 	Shop.saveProducts(shop, _products, function (err) {
+				 	Product.save(_products, function (err, savedProducts) {
 				 		if (err) res.send('Error saving products');
 				 		else {
-				 			res.redirect('/preferences/new');
+				 			Shop.saveProducts(shop, savedProducts, function (err) {
+				 				if (err) res.send('Error updating Shop with products');
+				 				else {
+				 					res.redirect('/preferences/new');
+				 				}
+				 			});
 				 		}
-				 	});
+				 	})
 				 });
 			});
 		});
