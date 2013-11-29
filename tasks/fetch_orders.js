@@ -1,6 +1,5 @@
 // Module Dependencies
 var nodify = require('nodify-shopify'),
-	db = require('../model/db'),
 	Shop = require('../model/shop'),
 	Order = require('../model/order'),
 	Customer = require('../model/customer'),
@@ -141,34 +140,40 @@ function getLatestOrderDates(shops, callback) {
 	});
 }
 
-// Begin fetchin orders
-step.waterfall([
-    function(callback){
-    	Shop.all(function (err, shops) { // Grab all shops
-    		if (err) callback(err);
-    		else callback(null, shops);
-    	});
-    },
-    function(shops, callback){
-    	getLatestOrderDates(shops, function (err, _shops) { // Fetches most recent order dates for all shops
-    		// console.log(_shops);
-    		if (err) callback(err);
-    		else callback(null, _shops);
-    	});
-    },
-    function(shops, callback){
-        getAllOrders(shops, function(err, allOrders) { // Get all relevant orders for all shops
-        	if (err) callback(err);
-        	else callback(null, allOrders)
-        })
-    },
-    function(ordersAllShops, callback){
-        saveShopsOrders(ordersAllShops, function (err, saved) { // Saves the received orders for all shops
-        	if (err) callback(err);
-        	else callback(null, saved);
-        });
-    }
-], function (err, results) {
-   	if (err) throw err;
-  	console.log(results);
-});
+function fetchOrders() {
+	// Begin fetchin orders
+	console.log('FetchOrders Job Initializing...');
+	step.waterfall([
+	    function(callback){
+	    	Shop.all(function (err, shops) { // Grab all shops
+	    		if (err) callback(err);
+	    		else callback(null, shops);
+	    	});
+	    },
+	    function(shops, callback){
+	    	getLatestOrderDates(shops, function (err, _shops) { // Fetches most recent order dates for all shops
+	    		// console.log(_shops);
+	    		if (err) callback(err);
+	    		else callback(null, _shops);
+	    	});
+	    },
+	    function(shops, callback){
+	        getAllOrders(shops, function(err, allOrders) { // Get all relevant orders for all shops
+	        	if (err) callback(err);
+	        	else callback(null, allOrders)
+	        })
+	    },
+	    function(ordersAllShops, callback){
+	        saveShopsOrders(ordersAllShops, function (err, saved) { // Saves the received orders for all shops
+	        	if (err) callback(err);
+	        	else callback(null, saved);
+	        });
+	    }
+	], function (err, results) {
+	   	if (err) throw err;
+	  	console.log(results);
+	});
+} // End of Helper functions
+
+// Expose Functionality
+exports.start = fetchOrders;
