@@ -78,9 +78,11 @@ var OrderSchema = new Schema({
         ref: 'CustomerSchema'
     },
 	totalItems: Number,
-	products: [String],
+	products: [Number],
 	fulfilled_at: Date,
+	placed_at: Date,
 	reviewSent: Boolean,
+	_shop: String,
 	created_at: {
 		type: Date,
 		default: Date.now
@@ -136,8 +138,14 @@ var ShopSchema = new Schema({
 	url: String,
 	token: String,
 	password: String,
-	orders: [OrderSchema],
-	products: [ProductSchema],
+	orders: [{
+        type: Schema.ObjectId,
+        ref: 'OrderSchema'
+    }],
+	products: [{
+        type: Schema.ObjectId,
+        ref: 'ProductSchema'
+    }],
 	preferences: {
         type: Schema.ObjectId,
         ref: 'PreferenceSchema'
