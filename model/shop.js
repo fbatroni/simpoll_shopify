@@ -4,6 +4,15 @@
 var mongoose = require('mongoose'),
 	Shop = mongoose.model('Shop');
 
+function all(callback) {
+	Shop.find()
+	.sort('-created_at')
+	.exec(function (err, shops) {
+		if (err) callback(err);
+		callback(null, shops);
+	});
+}
+
 function save(shops, callback) {
 	shops = (shops instanceof Array) ? shops : [shops];
 	Shop.create(shops, function (err) {
@@ -35,7 +44,17 @@ function addPreference(shop, preference, callback) {
 
 function addProducts(shop, products, callback) {
 	products.forEach(function (item, index) {
-		shop.products.push(item);
+		shop.products.push(item._id);
+	})
+	shop.save(function (err) {
+		if (err) callback(err);
+		else callback(null);
+	})
+}
+
+function addOrders(shop, orders, callback) {
+	orders.forEach(function (item, index) {
+		shop.orders.push(item._id);
 	})
 	shop.save(function (err) {
 		if (err) callback(err);
@@ -53,8 +72,10 @@ function findAndUpdate(query, update, options, callback) {
 	});
 }
 
+exports.all = all;
 exports.save = save;
 exports.findAndUpdate = findAndUpdate;
 exports.findByName = byName;
 exports.savePreferences = addPreference;
 exports.saveProducts = addProducts;
+exports.saveOrders = addOrders;
