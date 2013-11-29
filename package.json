@@ -12,6 +12,9 @@
     "mongoose": "*",
     "nodify-shopify": "git://github.com/Shopfrogs/Nodify.git",
     "moment": "*",
-    "async": "*"
+    "async": "*",
+    "cron": "*",
+    "time": "*",
+    "mandrill-api": "*"
   }
 }
