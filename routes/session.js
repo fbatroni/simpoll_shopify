@@ -32,6 +32,12 @@ var init = function(app, config) {
 		})
 	});
 
+	// delte me, just testint email functionality
+	app.post('/rev', function (req, res) {
+		console.log(req.body);
+		res.send(req.body);
+	});
+
 	// Signup - Shop account created, ask them to install our app
 	app.get('/signup/install', function (req, res) {
 		console.log(req.session.shop);
@@ -60,7 +66,7 @@ var init = function(app, config) {
 		    function(callback){
 		    	Shop.findByName(req.body.shop, function (err, shop) {
 		    		if (err) callback(err);
-		    		else if (!shop) callback(null, false, null); // Second argument specifies whether the shop exists or not. Third specifies an object representing the shop 
+		    		else if (!shop) callback(null, false, null); // Second argument specifies whether the shop exists or not. Third specifies an object representing the shop
 		    		else {
 		    			var isValidLogin = Pass.validate(shop.password, req.body.password);
 		    			if (isValidLogin) callback(null, true, shop);
@@ -86,7 +92,7 @@ var init = function(app, config) {
 	// Handle feedback from authentication attempt
 	function authenticate(req, res) {
 		var shop = req.body.shop;
-		if(shop !== undefined && shop !== null) {	
+		if(shop !== undefined && shop !== null) {
 		  	console.log('creating a session for', shop, config.apiKey, config.secret);
 			config.session.active = config.nodify.createSession(shop, config.apiKey, config.secret, {
 			    scope: {orders: "read", products: "read"},
@@ -113,7 +119,7 @@ var init = function(app, config) {
 					callback(null, products);
 				}
 			});
-		} 
+		}
 	}
 
 	// Exchange temporary token for a permanent one
@@ -124,17 +130,17 @@ var init = function(app, config) {
 		// Request permanent token
 		config.session.active.requestPermanentAccessToken(req.query.code, function onPermanentAccessToken(token) {
 			console.log('Authenticated on shop <', req.query.shop, '/', config.session.active.store_name, '> with token <', token, '>')
-			
+
 			// Add shop token and url to the session
 			req.session.shop.token = token;
 			req.session.shop.url = config.session.active.url;
 
 			// Find and update the Shop with its token and url
-			var query = { 
+			var query = {
 				name: req.session.shop.name
 			};
-			Shop.findAndUpdate(query, { 
-				token: token, 
+			Shop.findAndUpdate(query, {
+				token: token,
 				url: config.session.active.url
 			}, {}, function (err, shop) {
 				if (err) throw err;

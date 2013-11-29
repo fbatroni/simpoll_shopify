@@ -12,18 +12,27 @@ var cronJob = require('cron').CronJob;
 
 
 // DEF OF CRON HIGH PRIEST
-var High_Priest = {
+function High_Priest(_args) {
 
-	// STANDARD CRON PATTERNS
-	ONCE		: '',						// TO RUN ONCE, PASS THE DATE AT WHICH TO RUN
-	DAILY 		: '00 00 07 * * *',			// RUN AT 7:00AM EVERY DAY
-	HOURLY 		: '00 00 0-23 * * *',		// RUN EVERY HOUR OF EVERY DAY
-	WEEKLY 		: '00 00 07 * * 1-6',		// RUN AT 7:00AM EVERY MONDAY - SATURDAY
-	MONTHLY 	: '00 00 07 27 * *',		// RUN AT 7:00AM ON THE 27th OF EVERY MONTH
-	BY_MINUTE 	: '00 0-59 * * * *',		// RUN EVERY MINUTE
+	//CLASS VARS
+	this.name        = _args.name;
+	this._args		 = _args;
+	this.started     = new Date();
+	this.description = _args.desc;
 
-	TIME_ZONE   : "America/Los_Angeles",
+	// CONSTANTS
+	this.ONCE 		= '';						// TO RUN ONCE, PASS THE DATE AT WHICH TO RUN
+	this.DAILY 		= '00 00 07 * * *';			// RUN AT 7:00AM EVERY DAY
+	this.HOURLY 	= '00 00 0-23 * * *';		// RUN EVERY HOUR OF EVERY DAY
+	this.WEEKLY 	= '00 00 07 * * 1-6';		// RUN AT 7:00AM EVERY MONDAY - SATURDAY
+	this.MONTHLY 	= '00 00 07 27 * *';		// RUN AT 7:00AM ON THE 27th OF EVERY MONTH
+	this.BY_MINUTE 	= '00 0-59 * * * *';		// RUN EVERY MINUTE
 
+	this.TIME_ZONE 	= "America/Los_Angeles";	// DEFAULT TIMEZONE
+}
+
+
+High_Priest.prototype.recurring_job = function() {
 
 	/*
 	 * Structure of Object _args
@@ -35,36 +44,49 @@ var High_Priest = {
 	 *	timeZone :-> type[String]	    The time zone under which times are given
 	 */
 
-	recurrin_job : function(_args) {
-		_args = _args || {};
-		console.log('Job starting...');
-		return new cronJob({
-			cronTime : _args.run_at   || High_Priest.BY_MINUTE,
-			onTick	 : _args.handler  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},
-			start	 : _args.start    || false,
-			timeZone : _args.timeZone || High_Priest.TIME_ZONE,
-		});
+	 var _args = this._args || {};
+	 console.log(this.name+ ' Job starting... at '+ this.started);
+	 new cronJob({
+	 	cronTime : _args.run_at   || this.BY_MINUTE,
+	 	onTick	 : _args.handler  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},
+	 	start	 : _args.start    || true,
+	 	timeZone : _args.timeZone || this.TIME_ZONE,
+	 });
 
-	}, // end recurring_job
+}; // end method recurring_job
 
 
-	one_time_job : function(_args) {
-		_args = _args || {};
+High_Priest.prototype.one_time_job = function(_args) {
 
-		return new cronJob(
-			_args.date     || new Date(),
-			_args.handler  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},
-			_args.start    || true,
-			_args.timeZone || High_Priest.TIME_ZONE
-		);
+	/*
+	 * Structure of Object _args
+	 * _args = {}
+	 * Keys ::
+	 *	run_at   :-> type[Cron pattern] Provide a pattern which specifies when and how often to run job, you can select from above
+	 *	handler  :-> type[Function]     Provide a function which is called at the scheduled time
+	 *	start	 :-> type[Boolean]	    Determines whether to start job immediately or later
+	 *	timeZone :-> type[String]	    The time zone under which times are given
+	 */
 
-	} // end one_time_job
+	var _args = this._args || {};
 
-} // end Object High_Priest
+	new cronJob(
+		_args.date     || new Date(),
+		_args.handler  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},
+		_args.start    || true,
+		_args.timeZone || this.TIME_ZONE
+	);
+
+}; // end method one_time_job
+
+High_Priest.prototype.start = function(opt) {
+	(opt == 1) ? this.recurring_job() : this.one_time_job();
+}
+
 
 
 // PUBLISH TO WORLD
-exports.Cron_Priest = High_Priest;
+module.exports.Cron_Priest = High_Priest;
 
 
 

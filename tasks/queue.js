@@ -5,8 +5,18 @@ var FetchOrders = require('./fetch_orders').start,
 
 // Fire Away
 console.log('Initializing cron jobs');
-var job1 = Priest.recurrin_job({handler:FetchOrders});
-job1.start();
+var job1 = new Priest({
+	handler:FetchOrders,
+	name:"Fetch Orders",
+	desc:"fetch orders from store"
+});
 
-var job2 = Priest.recurrin_job();
-job2.start();
+job1.start(1);
+
+
+var job2 = new Priest({
+	name:"No Name",
+	desc:"do nothing"
+});
+
+job2.start(1);
