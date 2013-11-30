@@ -1,13 +1,13 @@
 // Module Dependencies
-var nodify = require('nodify-shopify'),
-	Shop = require('../model/shop'),
-	Order = require('../model/order'),
-	Customer = require('../model/customer'),
-	step = require('async');
+var nodify   = require('nodify-shopify'),
+	Shop     = require('../../model/shop'),
+	Order    = require('../../model/order'),
+	Customer = require('../../model/customer'),
+	step     = require('async');
 
 // Config Vars
-var apiKey, secret, session = {}, 
-	shop, shopToken; 
+var apiKey, secret, session = {},
+	shop, shopToken;
 
 // Set Api Key & Secret
 //If Heroku or Foreman
@@ -16,9 +16,9 @@ var apiKey, secret, session = {},
   secret = process.env.SHOPIFY_SECRET;
 }
 else {
-  var config = require ('../config.json');
-  apiKey = config.apiKey;
-  secret = config.secret;
+  var config = require ('../../config.json');
+  apiKey     = config.apiKey;
+  secret     = config.secret;
 } // Key & Secret Set
 
 // Helpers
@@ -114,7 +114,7 @@ function saveOrdersForShop(shopOrders, callback) {
 		} else {
 			callback(null, 'a shop has no orders to save');
 		}
-		
+
 	});
 }
 
@@ -176,4 +176,4 @@ function fetchOrders() {
 } // End of Helper functions
 
 // Expose Functionality
-exports.start = fetchOrders;
+exports.init = fetchOrders;

@@ -1,7 +1,7 @@
 
 /**
  *
- * @Name	flingmail
+ * @Name	Mailer
  * @Author 	S. A.
  * @Date	27 11 14
  * @Purpose	mail sender
@@ -9,77 +9,104 @@
  **/
 
 
+
 // GET CONFIG FILE AND RETRIEVE MANDRILL API KEY
 var config = require ('../config.json');
 var apiKey = config.mandrill_api_key;
 
-
 // MAKE THE MANDRILL MODULE AVAILABLE AND CREATE INSTANCE
-var mandrill = require('mandrill-api/mandrill');
-var mandrill_client = new mandrill.Mandrill(apiKey);
-
-var frowny = require('../views/email/images/frowny.json').image;
-var smiley = require('../views/email/images/smiley.json').image;
+var mandrill        = require('mandrill-api/mandrill');
 
 
-var FlingMail = {
-	async	: false,
 
-	message : {
-		"html" : '<p>Example <b>HTML</b> content</p><br><img src="cid:smile"><br><img src="cid:frown">',
-		"text" : "Example text content",
-		"subject" : "Email Test Phase 1",
-		"from_email" : "Simpoll@reviews.com",
-		"from_name" : "Simpoll Shop",
-		"to" : [{
-			"email" : "elimence@gmail.com",
-			"name" : "Samuel Ako",
-			"type" : "to"
+
+function Mailer(_args) {
+
+	// INIT MANDRIL CLIENT OBJECT
+	this.m_client = new mandrill.Mandrill(apiKey);
+
+	// ASSIGN CALLBACKS
+	this.usr_def_fail = _args.fail;
+	this.usr_def_succ = _args.success;
+
+	// LOAD IMAGES TO INCLUDE IN MESSAGE BODY
+	this.frowny_image = require('../views/email/images/frowny.json').image;
+	this.smiley_image = require('../views/email/images/smiley.json').image;
+	this.simpol_brand = require('../views/email/images/simpol.json').image;
+
+	// INIT EMAIL MESSAGE PARAMS
+	this.async = false;
+	this.message = {
+		"html" 			: _args.email,
+		"text" 			: _args.text,
+		"subject" 		: _args.subject,
+		"from_email"	: _args.from_email,
+		"from_name"		: _args.from_name,
+		"to"			: [{
+			"email"	: _args.to_email,
+			"name"	: _args.to_name,
+			"type"	: "to"
 		}],
 
-		"inline_css": true,
+		"inline_css"	: true,
 
-		"images": [{
-	        "type": "image/png",
-	        "name": "smile",
-	        "content": smiley
-	    },
-	    {
-	    	"type": "image/png",
-	    	"name": "frown",
-	    	"content": frowny
-	    }]
-	},
+		"images"		: [{
+			"type"    : "image/png",
+			"name"	  : "SMILEY_IMAGE",
+			"content" : this.smiley_image
+		},
+		{
+			"type"    : "image/png",
+			"name"	  : "FROWNY_IMAGE",
+			"content" : this.frowny_image
+		},
+		{
+			"type"    : "image/png",
+			"name"	  : "SIMPOL_BRAND",
+			"content" : this.simpol_brand
+		}]
 
-	fling : function(_args) {
-		console.log("flinging hath began");
-		_args = _args || {};
+	};
+}// END CLASS Mailer
 
-		mandrill_client.messages.send(
-			{
-				"message" : FlingMail.message,
-				"async"	  : FlingMail.async
-			},
 
-			_args.success || function(result) { console.log(result) },
+// DEFAULT FAIL FUNCTION THAT IS USED WHEN NONE IS PROVIDED
+Mailer.prototype.fail = function(e) {
+	console.log('A mandrill error occurred: '+ e.name+ ' - '+ e.message);
+	console.log('if you are seeing this message, know that i\'m not responsible');
+};// END METHOD fail
 
-			_args.fail    || function(e) { console.log('A mandrill error occurred: '+ e.name+ ' - '+ e.message) }
 
-		);
-	},
+// DEFAULT SUCCESS FUNCTION THAT IS USED WHEN NONE IS PROVIDED
+Mailer.prototype.success = function(result) {
+	var res = result[0];
 
-	init : function(_args) {
-		_args = _args || {};
-
-		FlingMail.message.html = _args.html;
-		FlingMail.message.text = _args.text;
-		FlingMail.message.from_name = _args.from_name;
-		FlingMail.message.from_email = _args.from_email;
-		FlingMail.message.to.email = _args.to_email;
-		FlingMail.message.to.name = _args.to_name;
+	if(res.status == 'sent') {
+		console.log("email successfully sent to "+ res.email);
+	} else {
+		console.log('email to '+ res.email+ ' has failed permanently');
+		console.log('reason: '+ res.reject_reason);
 	}
-}
+};// END METHOD success
 
-exports.mailer = FlingMail;
+
+// CALL THIS METHOD TO SEND MESSAGE
+Mailer.prototype.dispatch = function() {
+	console.log("...Sending email to "+ this.message.to[0].name+ " from "+ this.message.from_name);
+
+	this.m_client.messages.send(
+		{
+			"message" : this.message,
+			"async"	  : this.async
+		},
+
+		this.usr_def_succ || this.success,
+		this.usr_def_fail || this.fail
+	);
+};// END METHOD dispatch
+
+
+// PUBLISH TO THE UNIVERSE :)
+module.exports.init = Mailer
 
 

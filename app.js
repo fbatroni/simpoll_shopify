@@ -3,15 +3,16 @@
  */
 var nodify    = require('nodify-shopify'),
     express   = require('express'),
-    http      = require('http'), 
+    http      = require('http'),
     path      = require('path'),
     app       = express(),
     fs        = require('fs'),
     db        = require('./model/db'); // Initialise Connection to MongoDB
 
+
 // Session Vars
-var apiKey, secret, 
-    session = {}, persistentKeys = {}; 
+var apiKey, secret,
+    session = {}, persistentKeys = {};
 
 // Set Api Key & Secret
 //If Heroku or Foreman
@@ -41,11 +42,11 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler()); 
+  app.use(express.errorHandler());
 }); // Configs End
 
 // Locate and Load Routes
@@ -67,5 +68,5 @@ routeFiles.forEach(function(file) {
 // Start The Server
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
-  var jobs = require('./tasks/queue');
+  var jobs = require('./tasks/cron_tab');
 });

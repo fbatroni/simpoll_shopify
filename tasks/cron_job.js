@@ -7,6 +7,7 @@
  * @Doc     scroll down to see mini documentation
  **/
 
+
 // MAKE CRON LIBRARY AVAILABLE
 var cronJob = require('cron').CronJob;
 
@@ -47,10 +48,10 @@ High_Priest.prototype.recurring_job = function() {
 	 var _args = this._args || {};
 	 console.log(this.name+ ' Job starting... at '+ this.started);
 	 new cronJob({
-	 	cronTime : _args.run_at   || this.BY_MINUTE,
-	 	onTick	 : _args.handler  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},
-	 	start	 : _args.start    || true,
-	 	timeZone : _args.timeZone || this.TIME_ZONE,
+	 	cronTime : _args.run_at   	 || this.BY_MINUTE,
+	 	onTick	 : _args.job_handle  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},
+	 	start	 : _args.start       || true,
+	 	timeZone : _args.timeZone    || this.TIME_ZONE,
 	 });
 
 }; // end method recurring_job
@@ -62,19 +63,19 @@ High_Priest.prototype.one_time_job = function(_args) {
 	 * Structure of Object _args
 	 * _args = {}
 	 * Keys ::
-	 *	run_at   :-> type[Cron pattern] Provide a pattern which specifies when and how often to run job, you can select from above
-	 *	handler  :-> type[Function]     Provide a function which is called at the scheduled time
-	 *	start	 :-> type[Boolean]	    Determines whether to start job immediately or later
-	 *	timeZone :-> type[String]	    The time zone under which times are given
+	 *	run_at     :-> type[Cron pattern] Provide a pattern which specifies when and how often to run job, you can select from above
+	 *	job_handle :-> type[Function]     Provide a function which is called at the scheduled time
+	 *	start	   :-> type[Boolean]	    Determines whether to start job immediately or later
+	 *	timeZone   :-> type[String]	    The time zone under which times are given
 	 */
 
 	var _args = this._args || {};
 
 	new cronJob(
-		_args.date     || new Date(),
-		_args.handler  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},
-		_args.start    || true,
-		_args.timeZone || this.TIME_ZONE
+		_args.date        || new Date(),
+		_args.job_handle  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},
+		_args.start       || true,
+		_args.timeZone    || this.TIME_ZONE
 	);
 
 }; // end method one_time_job
@@ -86,34 +87,6 @@ High_Priest.prototype.start = function(opt) {
 
 
 // PUBLISH TO WORLD
-module.exports.Cron_Priest = High_Priest;
-
-
-
-
-
-				/** HOW TO USE cronjobs.js
-
-   1. Require the cronjobs.js module as follows;
-
-	  var job = require('./helpers/cronjobs').Cron_Priest.one_time_job({});
-	  	OR
-	  var job = require('./helpers/cronjobs').Cron_Priest.recurrin_job({});
-
-	  Passing an object to the recurring_job or the one_time_job function
-	  You can pass an empty Object to use the defaults which are as follows
-
-	  a) time     : Job is run every minute
-	  b) handler  : Calls a default handler which prints a message to the console
-	  b) timeZone : Uses the American/Los Angeles time zone
-	  c) start    : For a one time job, the job is started immediately
-	                But for a recurring job, start() has to be called on the job to start
-
-   2. Finally, call job.start() to begin the job
- 	  NB: This is for a recurring job, or a one time job for which you specify start as false
-
-
-**/
-
+module.exports.init = High_Priest;
 
 
