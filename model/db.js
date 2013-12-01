@@ -81,6 +81,7 @@ var OrderSchema = new Schema({
 	products: [Number],
 	fulfilled_at: Date,
 	placed_at: Date,
+	review_sceduled_for: Date,
 	reviewSent: Boolean,
 	_shop: String,
 	created_at: {
@@ -123,6 +124,10 @@ var PreferenceSchema = new Schema({
 		type: Boolean,
 		default: true
 	},
+	shop: {
+		type: Schema.ObjectId,
+        ref: 'ShopSchema'
+	},
 	created_at: {
 		type: Date,
 		default: Date.now
@@ -160,10 +165,10 @@ var ShopSchema = new Schema({
 });
 
 // Compile Schemas into Models
-mongoose.model( 'Shop', ShopSchema );
 mongoose.model( 'Preferences', PreferenceSchema );
+mongoose.model( 'Shop', ShopSchema );
+mongoose.model( 'Product', ProductSchema );
 mongoose.model( 'Order', OrderSchema );
 mongoose.model( 'Customer', CustomerSchema );
-mongoose.model( 'Product', ProductSchema );
 mongoose.model( 'Review', ReviewSchema );
 mongoose.model( 'ReviewTally', ReviewTallySchema );
