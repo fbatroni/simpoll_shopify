@@ -31,7 +31,7 @@ function byName(name, callback) {
 	.equals(name)
 	.exec(function (err, shops) {
 		if (err) callback(err);
-		callback(null, shops[0]);
+		else callback(null, shops[0]);
 	});
 }
 
