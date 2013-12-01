@@ -35,7 +35,7 @@ var init = function(app, config) {
 									true : false;
 
 		// Save the preferences
-		Preferences.save(preference, function (err, pref) {
+		Preferences.save(preference, shopName, function (err, pref) {
 			if (err) res.send('an error occurred');
 			else {
 				step.waterfall([
