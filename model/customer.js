@@ -15,4 +15,15 @@ function save(customers, callback) {
 	});
 }
 
+function byID(id, callback) {
+	Customer.findOne({
+		_id: id
+	})
+	.exec(function (err, customer) {
+		if (err) callback(err);
+		else callback(null, customer);
+	});
+}
+
 exports.save = save;
+exports.findByID = byID;
