@@ -2,15 +2,23 @@
 * Module Dependencies
 */
 var mongoose = require('mongoose'),
+	Shop = require('./shop'),
 	Preferences = mongoose.model('Preferences');
 
-function save(preferences, callback) {
-	preferences = (preferences instanceof Array) ? preferences : [preferences];
-	Preferences.create(preferences, function (err) {
+function save(preferences, shopName, callback) {
+	Shop.findByName(shopName, function (err, shop) {
 		if (err) callback(err);
 		else {
-			var saved = Array.prototype.slice.call(arguments, 1);
-			callback(null, saved[0]);
+			preferences.shop = shop._id;
+			preferences = (preferences instanceof Array) ? preferences : [preferences];
+			
+			Preferences.create(preferences, function (err) {
+				if (err) callback(err);
+				else {
+					var saved = Array.prototype.slice.call(arguments, 1);
+					callback(null, saved[0]);
+				}
+			});
 		}
 	});
 }
