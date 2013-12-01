@@ -4,6 +4,15 @@
 var mongoose = require('mongoose'),
 	Order = mongoose.model('Order');
 
+function all(callback) {
+	Order.find()
+	.sort('-created_at')
+	.exec(function (err, orders) {
+		if (err) callback(err);
+		callback(null, orders);
+	});
+}
+
 function save(orders, callback) {
 	orders = (orders instanceof Array) ? orders : [orders];
 	Order.create(orders, function (err) {
@@ -40,6 +49,7 @@ function getLatestByShop(shopName, callback) {
 	});	
 }
 
+exports.all = all;
 exports.latest = getLatest;
 exports.latestByShop = getLatestByShop;
 exports.save = save;
