@@ -25,5 +25,16 @@ function byName(name, callback) {
 	});
 }
 
+function bySID(sid, callback) {
+	Product.find()
+	.where('id')
+	.equals(sid)
+	.exec(function (err, products) {
+		if (err) callback(err);
+		callback(null, products[0]);
+	});
+}
+
 exports.save = save;
 exports.findByName = byName;
+exports.findByShopifyID = bySID;
