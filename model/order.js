@@ -2,7 +2,13 @@
 * Module Dependencies
 */
 var mongoose = require('mongoose'),
-	Order = mongoose.model('Order');
+	db = require('./db'),
+	Shop = require('./shop'),
+	Customer = require('./customer'),
+	Product = require('./product'),
+	Preferences = require('./preferences'),
+	Order = mongoose.model('Order'),
+	step = require('async');
 
 function all(callback) {
 	Order.find()
@@ -20,6 +26,67 @@ function save(orders, callback) {
 		else {
 			var saved = Array.prototype.slice.call(arguments, 1);
 			callback(null, saved);
+		}
+	});
+}
+
+function _getProductInfo(productID, callback) {
+	Product.findByShopifyID(productID, function (err, product) {
+		if (err) callback(err);
+		else callback(null, product);
+	});
+}
+
+function _getProductsInfo(products, callback) {
+	step.map(products, _getProductInfo, function (err, _products) {
+		if (err) callback(err);
+		else callback(null, _products);
+	});
+}
+
+function emailInfo(order, callback) {
+	var info = {};
+	step.waterfall([
+	    function(callback){
+	    	Shop.findByName(order._shop, function (err, shop) {
+	    		if (err) callback(err);
+	    		else callback(null, shop);
+	    	});
+	    },
+	    function(shop, callback){
+	    	Customer.findByID(order.customer, function (err, customer) {
+	    		if (err) callback(err);
+	    		else callback(null, shop, customer);
+	    	});
+	    },
+	    function(shop, customer, callback){
+	    	_getProductsInfo(order.products, function (err, products) {
+	    		if (err) callback(err);
+	    		else callback(null, shop, customer, products);
+	    	});
+	    },
+	    function(shop, customer, products, callback){
+	    	Preferences.findByID(shop.preferences, 
+	    		function (err, preferences) {
+	    			if (err) callback(err);
+	    			else callback(null, shop, customer, products, preferences);
+	    		});
+	    }
+	], function (err, shop, customer, products, preferences) {
+		if (err) callback(err);
+		else {
+			info.shop = shop.name;
+			info.emailSubject = preferences.messageSubject;
+			info.emailBody = preferences.messageBody;
+			info.emailSignature = preferences.messageSignature;
+			info.sentFrom = preferences.showAsSentFrom;
+			info.customer = {
+				firstName: customer.firstName,
+				lastName: customer.lastName,
+				email: customer.email
+			};
+			info.products = products;
+			callback(null, info);
 		}
 	});
 }
@@ -53,3 +120,4 @@ exports.all = all;
 exports.latest = getLatest;
 exports.latestByShop = getLatestByShop;
 exports.save = save;
+exports.emailInfo = emailInfo;
