@@ -33,5 +33,16 @@ function findAndUpdate(query, update, options, callback) {
 	});
 }
 
+function byID(id, callback) {
+	Preferences.findOne({
+		_id: id
+	})
+	.exec(function (err, shop) {
+		if (err) callback(err);
+		else callback(null, shop);
+	});
+}
+
 exports.save = save;
 exports.findAndUpdate = findAndUpdate;
+exports.findByID = byID;
