@@ -27,26 +27,56 @@ var options= {
 	pretty : true
 };
 
+/** NEED 4 OBJECTS:-> Preferences, Customer, Shop & Orders **/
+var cust = {
+	name:"",
+	email:""
+};
+
+var shop = {
+	name:""
+};
+
+var pref = {
+	subject:"",
+	signature:"",
+	from:"",
+	body:""
+};
+
+var product = {
+	name:""
+};
+
+var order = {
+	web_version:""
+};
+
+var default_to_text = preference.body+ "<br> Your mail client is unable to render this form.
+	 please click on the link below to view the web version. <br> "+ preference.signature +
+	  " <br> "+ order.web_version;
+
 var fn = jade.compile(require('fs').readFileSync('views/email/review_email.jade'), options);
 var htmlOutput = fn({
-  customer: {
-    name: 'Alonzo Church'
-  }
+  order,
+  customer,
+  preference
 });
 
-console.log(htmlOutput);
+// console.log(htmlOutput);
 
 function SendReviews() {
 
 	mailer = new Mailer({
-		email : htmlOutput,
-		text  : 'no text version yet',
-		subject : 'What\'s up bro',
-		from_name : 'Samuel of Shopify',
-		from_email : 'elimence@gmail.com',
-		to_name : 'Forbes Lind',
-		to_email : 'samuel.ako@meltwater.org'
+		email 		: htmlOutput,
+		text  		: default_to_text,
+		subject 	: preference.subject,
+		from_name 	: shop.name,
+		from_email	: preference.from,
+		to_name 	: customer.name,
+		to_email 	: customer.email
 	});
+
 	mailer.dispatch();
 }
 
