@@ -2,7 +2,8 @@
 * Module Dependencies
 */
 var mongoose = require('mongoose'),
-	Shop = mongoose.model('Shop');
+	Shop = mongoose.model('Shop'),
+	Preferences = mongoose.model('Preferences');
 
 function all(callback) {
 	Shop.find()
@@ -72,6 +73,22 @@ function findAndUpdate(query, update, options, callback) {
 	});
 }
 
+function daysToWait(shopName, callback) {
+	Shop
+	.findOne({ name: shopName })
+	.exec(function (err, shop) {
+		if (err) callback(err);
+		else {
+			Preferences
+			.findOne({_id: shop.preferences})
+			.exec(function (err, preferences) {
+				if (err) callback(err);
+				else callback(null, preferences.leadTime);
+			})
+		}
+	})
+}
+
 exports.all = all;
 exports.save = save;
 exports.findAndUpdate = findAndUpdate;
@@ -79,3 +96,4 @@ exports.findByName = byName;
 exports.savePreferences = addPreference;
 exports.saveProducts = addProducts;
 exports.saveOrders = addOrders;
+exports.daysToWait = daysToWait;
