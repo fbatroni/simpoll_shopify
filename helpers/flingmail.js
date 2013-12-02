@@ -18,6 +18,11 @@ var apiKey = config.mandrill_api_key;
 var mandrill        = require('mandrill-api/mandrill');
 
 
+// IMPORT logger
+var logger = require('./logger').logger;
+
+// TURN ON LOGGING
+logger.on();
 
 
 function Mailer(_args) {
@@ -72,8 +77,8 @@ function Mailer(_args) {
 
 // DEFAULT FAIL FUNCTION THAT IS USED WHEN NONE IS PROVIDED
 Mailer.prototype.fail = function(e) {
-	console.log('A mandrill error occurred: '+ e.name+ ' - '+ e.message);
-	console.log('if you are seeing this message, know that i\'m not responsible');
+	logger.log('A mandrill error occurred: '+ e.name+ ' - '+ e.message);
+	logger.log('if you are seeing this message, know that i\'m not responsible');
 };// END METHOD fail
 
 
@@ -82,17 +87,17 @@ Mailer.prototype.success = function(result) {
 	var res = result[0];
 
 	if(res.status == 'sent') {
-		console.log("email successfully sent to "+ res.email);
+		logger.log("email successfully sent to "+ res.email);
 	} else {
-		console.log('email to '+ res.email+ ' has failed permanently');
-		console.log('reason: '+ res.reject_reason);
+		logger.log('email to '+ res.email+ ' has failed permanently');
+		logger.log('reason: '+ res.reject_reason);
 	}
 };// END METHOD success
 
 
 // CALL THIS METHOD TO SEND MESSAGE
 Mailer.prototype.dispatch = function() {
-	console.log("...Sending email to "+ this.message.to[0].name+ " from "+ this.message.from_name);
+	logger.log("...Sending email to "+ this.message.to[0].name+ " from "+ this.message.from_name);
 
 	this.m_client.messages.send(
 		{

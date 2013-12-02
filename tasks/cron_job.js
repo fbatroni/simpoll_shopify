@@ -11,6 +11,12 @@
 // MAKE CRON LIBRARY AVAILABLE
 var cronJob = require('cron').CronJob;
 
+// IMPORT logger
+var logger = require('../helpers/logger').logger;
+
+// TURN ON LOGGING
+logger.on();
+
 
 // DEF OF CRON HIGH PRIEST
 function High_Priest(_args) {
@@ -47,7 +53,7 @@ High_Priest.prototype.recurring_job = function() {
 	 */
 
 	 var _args = this._args || {};
-	 console.log(this.name+ ' Job starting... at '+ this.started);
+	 logger.log(this.name+ ' Job starting... at '+ this.started);
 	 new cronJob({
 	 	cronTime : _args.run_at   	 || this.BY_MINUTE,
 	 	onTick	 : _args.job_handle  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},

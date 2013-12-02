@@ -10,6 +10,12 @@ var nodify   = require('nodify-shopify'),
 var apiKey, secret, session = {},
 	shop, shopToken;
 
+// IMPORT logger
+var logger = require('../../helpers/logger').logger;
+
+// TURN ON LOGGING
+logger.on();
+
 // Set Api Key & Secret
 //If Heroku or Foreman
  if(process.env.SHOPIFY_API_KEY != undefined && process.env.SHOPIFY_SECRET != undefined){
@@ -154,7 +160,7 @@ function getLatestOrderDates(shops, callback) {
 
 function fetchOrders() {
 	// Begin fetchin orders
-	console.log('FetchOrders Job Initializing...');
+	logger.log('FetchOrders Job Initializing...');
 	step.waterfall([
 	    function(callback){
 	    	Shop.all(function (err, shops) { // Grab all shops
@@ -164,7 +170,7 @@ function fetchOrders() {
 	    },
 	    function(shops, callback){
 	    	getLatestOrderDates(shops, function (err, _shops) { // Fetches most recent order dates for all shops
-	    		// console.log(_shops);
+	    		// logger.log(_shops);
 	    		if (err) callback(err);
 	    		else callback(null, _shops);
 	    	});
@@ -183,7 +189,7 @@ function fetchOrders() {
 	    }
 	], function (err, results) {
 	   	if (err) throw err;
-	  	console.log(results);
+	  	logger.log(results);
 	});
 } // End of Helper functions
 

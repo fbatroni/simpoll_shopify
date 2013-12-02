@@ -11,6 +11,13 @@
 // Module Dependencies
 var Priest 		= require('./cron_job').init;
 
+// IMPORT logger
+var logger = require('../helpers/logger').logger;
+
+// TURN ON LOGGING
+logger.on();
+
+
 
 // LOAD JOBS
 var FetchOrders = require('./jobs/fetch_orders').init,
@@ -20,7 +27,8 @@ var FetchOrders = require('./jobs/fetch_orders').init,
 
 
 // INIT JOBS
-console.log('Initializing cron jobs');
+logger.log('Initializing cron jobs');
+
 var FetchOrdersJob = new Priest({
 	job_handle : FetchOrders,
 	name	   : "Fetch Orders",

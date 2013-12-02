@@ -19,6 +19,12 @@ var	get_orders     = require('../../model/order').all,
 // LOAD JADE
 var jade = require('jade');
 
+//IMPORT logger
+var logger = require('../../helpers/logger').logger;
+
+//TURN ON LOGGING
+logger.on();
+
 
 
 // god objcet
@@ -61,7 +67,7 @@ var Everest = {
 
 		function generateMessageHtml(order_email_info, callback) {
 			var fn = jade.compile( require('fs').readFileSync('views/email/review_email.jade'), {pretty: true} );
-			console.log("check for bug : ", order_email_info);
+			logger.log("check for bug : ", order_email_info);
 			var htmlOutput = fn({
 				orderInfo: order_email_info
 			});
@@ -101,7 +107,7 @@ var Everest = {
 					success : function (result) {
 						flag_order_as_sent(emailObject.email_info.orderID, function (err) {
 							if (err) throw err;
-							console.log(emailObject.email_info.orderID + 'updated as sent');
+							logger.log(emailObject.email_info.orderID + 'updated as sent');
 						})
 					}
 				});
@@ -117,7 +123,7 @@ var Everest = {
 
 
 function SendReviews() {
-	console.log("starting outside waterfall");
+	logger.log("starting outside waterfall");
 	require('async').waterfall([
 
 		Everest.crawl_orders,
