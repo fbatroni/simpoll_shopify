@@ -19,10 +19,10 @@ var	get_orders     = require('../../model/order').all,
 // LOAD JADE
 var jade = require('jade');
 
-//IMPORT logger
-var logger = require('../../helpers/logger').logger;
-
-//TURN ON LOGGING
+// IMPORT logger
+var LOGGER = require('../../helpers/logger').logger;
+var logger = new LOGGER();
+// TURN ON LOGGING
 logger.on();
 
 

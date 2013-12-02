@@ -1,25 +1,25 @@
 //SWITCH LOGGING ON AND OFF AT FILE LEVEL
 
 
-function logger () {
+function SwitchLog () {
 	this.STATE = true;
 }
 
-logger.prototype.on = function () {
+SwitchLog.prototype.on = function () {
 	this.STATE = true;
 };
 
-logger.prototype.off = function () {
+SwitchLog.prototype.off = function () {
 	this.STATE = false;
 }
 
-logger.prototype.getState = function () {
+SwitchLog.prototype.getState = function () {
 	return this.STATE;
 }
 
-logger.prototype.log = function (msg) {
+SwitchLog.prototype.log = function () {
 	if (this.getState())
-		console.log(msg);
+		console.log.apply(null, arguments);
 }
 
-module.exports.logger = new logger();
+module.exports.logger = SwitchLog;
