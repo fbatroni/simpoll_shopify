@@ -28,6 +28,7 @@ function High_Priest(_args) {
 	this.WEEKLY 	= '00 00 07 * * 1-6';		// RUN AT 7:00AM EVERY MONDAY - SATURDAY
 	this.MONTHLY 	= '00 00 07 27 * *';		// RUN AT 7:00AM ON THE 27th OF EVERY MONTH
 	this.BY_MINUTE 	= '00 0-59 * * * *';		// RUN EVERY MINUTE
+	this.BY_SECOND  = '0-10 * * * * *';
 
 	this.TIME_ZONE 	= "America/Los_Angeles";	// DEFAULT TIMEZONE
 }

@@ -7,77 +7,124 @@
  * @Doc     scroll down to see mini documentation
  **/
 
-// LOAD MAILER
-var Mailer = require('../../helpers/flingmail').init;
+// LOAD MAILER & ASYNC
+var Mailer = require('../../helpers/flingmail').init,
+	step   = require('async');
 
-// LOAD TEMPLATE
-var review_template = require('../../views/email/em.json').jade;
-
-
-// LOAD DB MODULES
-var	Shop     = require('../../model/shop'),
-	Order    = require('../../model/order'),
-	Customer = require('../../model/customer');
+// LOAD DB MODULE INTERFACES
+var	get_orders     = require('../../model/order').all,
+	get_email_info = require('../../model/order').emailInfo,
+	flag_order_as_sent = require('../../model/order').flagAsSent;
 
 // LOAD JADE
 var jade = require('jade');
 
 
-var options= {
-	pretty : true
+
+// god objcet
+var Everest = {
+
+	crawl_orders	: function (callback) {
+
+    	get_orders(function (err, orders) {
+			if (err) callback(err);
+			else callback(null, orders);
+		});
+	},
+
+	filter_orders	: function (orders, callback) {
+		var t_d   = new Date ();
+
+		function filter (order, callback) {
+			var o_d   = new Date ( order.review_sceduled_for.toString() ),
+
+			    toDay = new Date ( t_d.getFullYear(), t_d.getMonth(), t_d.getDate() ),
+			    sched = new Date ( o_d.getFullYear(), o_d.getMonth(), o_d.getDate() );
+
+
+		    if (toDay >= sched && !order.reviewSent) callback(true);
+		    else				callback(false);
+		};
+
+		step.filter(orders, filter, function(_orders) {
+			callback(null, _orders);
+		});
+	},
+
+	cook_email		: function (orders, callback) {
+
+		function get_order_email_info(order, callback) {
+			get_email_info(order, function (err, email_info) {
+				callback(null, email_info);
+			});
+		};
+
+		function generateMessageHtml(order_email_info, callback) {
+			var fn = jade.compile( require('fs').readFileSync('views/email/review_email.jade'), {pretty: true} );
+			console.log("check for bug : ", order_email_info);
+			var htmlOutput = fn({
+				orderInfo: order_email_info
+			});
+			callback(null, {
+				html: htmlOutput,
+				email_info: order_email_info
+			});
+		}
+
+		step.map(orders, get_order_email_info, function (err, orders_email_info) {
+			if (err) callback(err);
+			else {
+				step.map(orders_email_info, generateMessageHtml, function (err, emailObjects) {
+					if (err) callback(err);
+					else {
+						callback(null, emailObjects);
+					}
+				});
+			};
+		});
+	},
+
+	dispatch		: function (err, emailObjects) {
+
+		if (err) throw err;
+		else {
+
+			emailObjects.forEach(function (emailObject, index) {
+				mailer = new Mailer({
+					email : emailObject.html,
+					text  : emailObject.email_info.emailBody,
+					subject : emailObject.email_info.emailSubject,
+					from_email : emailObject.email_info.sentFrom,
+					from_name : emailObject.email_info.shop,
+					to_email : emailObject.email_info.customer.email,
+					to_name : emailObject.email_info.customer.firstName,
+					success : function (result) {
+						flag_order_as_sent(emailObject.email_info.orderID, function (err) {
+							if (err) throw err;
+							console.log(emailObject.email_info.orderID + 'updated as sent');
+						})
+					}
+				});
+
+				mailer.dispatch()
+			});
+
+		};
+
+	},
+
 };
 
-/** NEED 4 OBJECTS:-> Preferences, Customer, Shop & Orders **/
-var cust = {
-	name:"",
-	email:""
-};
-
-var shop = {
-	name:""
-};
-
-var pref = {
-	subject:"",
-	signature:"",
-	from:"",
-	body:""
-};
-
-var product = {
-	name:""
-};
-
-var order = {
-	web_version:""
-};
-
-var default_to_text = preference.body+ "<br> Your mail client is unable to render this form.
-	 please click on the link below to view the web version. <br> "+ preference.signature +
-	  " <br> "+ order.web_version;
-
-var fn = jade.compile(require('fs').readFileSync('views/email/review_email.jade'), options);
-var htmlOutput = fn({
-  order,
-  customer,
-  preference
-});
-
-// console.log(htmlOutput);
 
 function SendReviews() {
+	console.log("starting outside waterfall");
+	require('async').waterfall([
 
-	mailer = new Mailer({
-		email 		: htmlOutput,
-		text  		: default_to_text,
-		subject 	: preference.subject,
-		from_name 	: shop.name,
-		from_email	: preference.from,
-		to_name 	: customer.name,
-		to_email 	: customer.email
-	});
+		Everest.crawl_orders,
+		Everest.filter_orders,
+		Everest.cook_email
 
-	mailer.dispatch();
+	], Everest.dispatch);
 }
 
 exports.init = SendReviews;

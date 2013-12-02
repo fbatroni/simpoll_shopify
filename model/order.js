@@ -66,7 +66,7 @@ function emailInfo(order, callback) {
 	    	});
 	    },
 	    function(shop, customer, products, callback){
-	    	Preferences.findByID(shop.preferences, 
+	    	Preferences.findByID(shop.preferences,
 	    		function (err, preferences) {
 	    			if (err) callback(err);
 	    			else callback(null, shop, customer, products, preferences);
@@ -75,6 +75,7 @@ function emailInfo(order, callback) {
 	], function (err, shop, customer, products, preferences) {
 		if (err) callback(err);
 		else {
+			info.orderID = order._id;
 			info.shop = shop.name;
 			info.emailSubject = preferences.messageSubject;
 			info.emailBody = preferences.messageBody;
@@ -113,11 +114,33 @@ function getLatestByShop(shopName, callback) {
 		else if (orders.length) {
 			callback(null, orders[0]);
 		} else callback(null, null);
-	});	
+	});
+}
+
+function byID(id, callback) {
+	Order.findById(id, function (err, order) {
+		if (err) callback(err);
+		else callback(null, order);
+	});
+}
+
+function flagAsSent (orderID, callback) {
+	byID(orderID, function (err, order) {
+		if (err) callback(err);
+		else {
+			order.reviewSent = true;
+			order.save(function (err) {
+				if (err) callback(err);
+				else callback(null);
+			})
+		}
+	})
 }
 
 exports.all = all;
+exports.findById = byID;
 exports.latest = getLatest;
 exports.latestByShop = getLatestByShop;
 exports.save = save;
 exports.emailInfo = emailInfo;
+exports.flagAsSent = flagAsSent;

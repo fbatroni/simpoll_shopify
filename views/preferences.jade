@@ -22,7 +22,7 @@ block content
                 .row.mail-headers
                   .col-xs-12.col-sm-12.col-md-3.lead-time
                     label(for='') Send After (days)
-                    input.form-control(type='number', value='#{preferences.leadTime}', min='1', max='31', name='leadTime')
+                    input.form-control(type='number', value='#{preferences.leadTime}', min='0', max='31', name='leadTime')
                   .col-xs-12.col-sm-12.col-md-9.message-subject
                     label(for='') Message Subject
                     input.form-control(type='text', value='#{preferences.messageSubject}', name='messageSubject')
