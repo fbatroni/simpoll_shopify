@@ -32,12 +32,6 @@ var init = function(app, config) {
 		})
 	});
 
-	// delte me, just testint email functionality
-	app.post('/rev', function (req, res) {
-		console.log(req.body);
-		res.send(req.body);
-	});
-
 	// Signup - Shop account created, ask them to install our app
 	app.get('/signup/install', function (req, res) {
 		console.log(req.session.shop);
