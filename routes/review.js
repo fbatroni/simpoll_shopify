@@ -125,21 +125,16 @@ var init = function(app, config) {
 					});
 				}
 			});	
-
-			// Product.findById(req.params.id, function (err, product) {
-			// 	if (err) res.send('Error fetching reviews');
-			// 	else {
-			// 		res.render('reviewsByProduct', {
-			// 			title: 'Simpoll - Reviews by product',
-			// 			shop: req.session.shop,
-			// 			product: product
-			// 		});
-			// 	}
-			// });
 		} else {
 			res.redirect('/');
 		}
+	});
 
+	// delte me, just testint email functionality
+	app.post('/reviews/:order/new', function (req, res) {
+		setTimeout(function () {
+			res.redirect('http://stopify-2.myshopify.com/products/nike-sneakers');
+		}, 5000);
 	});
 }
 
