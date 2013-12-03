@@ -15,6 +15,7 @@
     "async": "*",
     "cron": "*",
     "time": "*",
-    "mandrill-api": "*"
+    "mandrill-api": "*",
+    "shopnode": "git://github.com/rconnelly/shopnode.git"
   }
 }
