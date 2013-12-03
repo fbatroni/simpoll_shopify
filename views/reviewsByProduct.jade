@@ -1,0 +1,54 @@
+extends layout
+
+block pagespecificstyles
+      link(rel="stylesheet"
+        type="text/css"
+        href="/stylesheets/reviewsByProduct.css")
+
+block content
+  .container.dashbody
+    include header
+    .row
+      .col-lg-4.filter
+        .by-label
+          h4.caption.info.reviews-caption  - Reviews
+          ul.filter-list.list-unstyled
+            li.active
+              a(href='') All
+            li
+              a(href='') Favorable
+            li
+              a(href='') Unfavorable
+      #viewport.col-lg-8.viewport
+        .header
+          .col-lg-12
+            h3.header-text
+              i.fa.fa-comment.icon
+              | &nbsp;Showing Reviews for #{product.name}
+        .body
+          .row.reviews
+            if product.reviews.length
+              each review in product.reviews
+                .col-lg-12.review
+                  .details
+                    .col-lg-2.rating
+                      if review.emotion
+                        i.fa.fa-smile-o.fa-5x.rating-smile
+                      else 
+                        i.fa.fa-frown-o.fa-5x.rating-frown
+                    .col-lg-8.meta
+                      div
+                        span.reviewer #{review.reviewer.firstName}
+                        span.ago
+                          i.fa.fa-clock-o
+                          | ago here
+                      .comment #{review.comment}
+                    .col-lg-2.publishing
+                      span
+                        a(href='#')
+                          i.fa.fa-facebook.icon.to-social
+                        a(href='')
+                          i.fa.fa-twitter.icon.to-social
+            else
+              p.lead(style='font-family: exo, sans-serif;') This product has no reviews at this time :(
+    include footer

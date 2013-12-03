@@ -6,36 +6,57 @@
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand(href='#') Project name
-    .navbar-collapse.collapse
-      ul.nav.navbar-nav
-        li.active
-          a(href='#') Home
-        li
-          a(href='#about') About
-        li
-          a(href='#contact') Contact
-        li.dropdown
-          a.dropdown-toggle(href='#', data-toggle='dropdown')
-            | Dropdown
-            b.caret
-          ul.dropdown-menu
-            li
-              a(href='#') Action
-            li
-              a(href='#') Another action
-            li
-              a(href='#') Something else here
-            li.divider
-            li.dropdown-header Nav header
-            li
-              a(href='#') Separated link
-            li
-              a(href='#') One more separated link
-      ul.nav.navbar-nav.navbar-right
-        li
-          a(href='../navbar/') Default
-        li.active
-          a(href='./') Static top
-        li
-          a(href='../navbar-fixed-top/') Fixed top
+      a.navbar-brand(href='#') 
+        | Simp
+        i.fa.fa-smile-o.simpoll-brand-face
+        | ll
+    if shop
+      .navbar-collapse.collapse
+        ul.nav.navbar-nav
+          li.active
+            a(href='/') Home
+          li
+            a(href='/reviews') Reviews
+          li
+            a(href='/preferences') Preferences
+        ul.nav.navbar-nav.navbar-right
+          li.dropdown
+            a.dropdown-toggle(href='#', data-toggle='dropdown')
+              | #{shop.name} &nbsp;
+              b.caret
+            ul.dropdown-menu
+              li.dropdown-header Admin
+              li
+                a(href='#{shop.url}')
+                  i.fa.fa-home
+                  | &nbsp;StoreFront
+              li
+                a(href='#{shop.url}/admin') 
+                  i.fa.fa-cog
+                    | &nbsp;StoreAdmin
+              li.divider
+              li.dropdown-header Subscriptions
+              li
+                a(href='/plans') 
+                  i.fa.fa-shopping-cart
+                    | &nbsp;Plans
+              li
+                a(href='/faqs') 
+                  i.fa.fa-question-circle
+                    | &nbsp;FAQs
+              li.divider
+              li.dropdown-header Your Session
+              li
+                a(href='/logout')
+                  i.fa.fa-power-off
+                    | &nbsp;Logout
+    else
+      .navbar-collapse.collapse
+        ul.nav.navbar-nav
+          li.active
+            a(href='/') Home
+        ul.nav.navbar-nav.navbar-right
+          li.active
+            a(href='/signup') Signup
+          li
+            a(href='/login') Login

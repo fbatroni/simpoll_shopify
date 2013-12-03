@@ -9,13 +9,32 @@ block content
   .container
     include header
     .jumbotron
-      h1 Collect More Reviews
+      h1.lead-header Get More Reviews
+      p.lead
+        | Boost confidence in your products with <br />awesome reviews from real customers.
+      p
+        a.btn.btn-lg.btn-warning(href='/signup', role='button') Start your Free Trial.
+    #how-it-works.container
+      .row
+        .col-lg-12
+          h1.heading How it works
         p.lead
-          | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
-        p
-          a.btn.btn-lg.btn-success(href='/signup', role='button') Get Started
-    .footer
-      .col-lg-6.copyright
-        div © 2013 PayButtonAfrica.
-      .col-lg-6.navup.align-right
-        a(href='#') Back to top
+          | We've simplified products reviews by replacing traditional review forms<br /> with one thats super easy to complete. You'll see more customers<br /> writing you reviews with Simpoll.
+    .container.features
+      .row
+        .col-lg-4.col-xs-12.feature
+          i.fa.fa-envelope-o.fa-5x.feature-glyph
+          h1.name Email Reminders
+          p.description
+            | Automatically, Send custom follow up email reminders, asking customers to leave a review.
+        .col-lg-4.col-xs-12.feature
+          i.fa.fa-comments-o.fa-5x.feature-glyph
+          h1.name Receive Notifications
+          p.description
+            | Never miss a review. You'll know it, the moment you receive a review.
+        .col-lg-4.col-xs-12.feature
+          i.fa.fa-bar-chart-o.fa-5x.feature-glyph
+          h1.name Gain Insights
+          p.description
+            | We provide meaningful analytics to help know and better serve your customers.
+    include footer

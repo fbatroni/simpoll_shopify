@@ -4,9 +4,9 @@ block content
   .container
     include header
     .row.signup
-      .col-lg-12
-        h1(style='text-align: center; color: #16AD1C;') You're a click away.
-      .col-lg-12
+      .col-lg-12(style='margin-bottom: 2em;')
+        h1(style='text-align: center; color: #16AD1C;') Let's setup your account.
+      .col-lg-12(style='margin-bottom: 4em;')
         form(role='form', action='/signup', method='post')
           .form-group
             input.form-control(type='text', name='shop', placeholder='Shop Name eg.Shoeshop7 i.e. without "myshopify.com"')
@@ -14,9 +14,5 @@ block content
             input.form-control(type='password', name='password', placeholder='Choose a password')
           .form-group
             input.form-control(type='password', name='confirm', placeholder='Confirm your password')
-          button.btn.btn-success.btn-block(type='submit') Signup
-    .footer
-      .col-lg-6.copyright
-        div © 2013 PayButtonAfrica.
-      .col-lg-6.navup.align-right
-        a(href='#') Back to top
+          button.btn.btn-primary.btn-block(type='submit') Create My Account
+    include footer

@@ -15,7 +15,7 @@ block content
             .col-xs-3.icon-holder
               i.fa.fa-comments-o.fa-5x.icon
             .col-xs-9.description
-              span.stat 320
+              span.stat 0
               span.stat-label Emails Sent
           .action
             .col-lg-9
@@ -29,7 +29,7 @@ block content
             .col-xs-3.icon-holder
               i.fa.fa-pencil-square-o.fa-5x.icon
             .col-xs-9.description
-              span.stat 240
+              span.stat 0
               span.stat-label New Reviews
           .action
             .col-lg-9
@@ -43,8 +43,8 @@ block content
             .col-xs-3.icon-holder
               i.fa.fa-user.fa-5x.icon
             .col-xs-9.description
-              span.stat 49
-              span.stat-label New Reviewers
+              span.stat 0
+              span.stat-label Negatives
           .action
             .col-lg-9
               a.view-more(href='#') View More
@@ -57,7 +57,7 @@ block content
             .col-xs-3.icon-holder
               i.fa.fa-globe.fa-5x.icon
             .col-xs-9.description
-              span.stat +47%
+              span.stat 0
               span.stat-label Brand Rating
           .action
             .col-lg-9
@@ -69,108 +69,50 @@ block content
       .col-lg-3
         .circle-highlight
           .value.one
-            p 100%
+            p 0%
           h4.description Send Rate
       .col-lg-3
         .circle-highlight
           .value.two
-            p 90%
+            p 0%
           h4.description Response Rate
       .col-lg-3
         .circle-highlight
           .value.three
-            p 60%
+            p 0%
           h4.description Social Visibility
       .col-lg-3
         .circle-highlight
           .value.four
-            p 90%
+            p 0%
           h4.description Shop Visibility
     .row.top-reviewers
       .col-lg-12
         table.table.table-bordered
           tr.header
             th.header-text(colspan='5')
-              i.fa.fa-user.icon
-              | Top Reviewers
+              i.fa.fa-thumbs-o-up.icon
+              | &nbsp;Top Reviewers
           tr
-            th Name
-            th Total Reviews
-            th Average Favorability of Reviews
-            th Time Since Last Review
-            th Email Address
+            td(colspan='5') No data to display
+    .row.bottom-reviewers
+      .col-lg-12
+        table.table.table-bordered
+          tr.header
+            th.header-text(colspan='5')
+              i.fa.fa-thumbs-o-down.icon
+              | &nbsp;Bottom Reviewers
           tr
-            td Sam Ako
-            td 60
-            td
-              | 90% Favorable
-              i.fa.fa-smile-o.fa-lg.rating-smile
-            td
-              i.fa.fa-clock-o.icon
-              | 9h
-            td
-              a(href='#') samuel.ako@meltwater.org
-          tr
-            td Yaw Boakye
-            td 31
-            td
-              | 76% Favorable
-              i.fa.fa-smile-o.fa-lg.rating-smile
-            td
-              i.fa.fa-clock-o.icon
-              | 9d
-            td
-              a(href='#') whereisyaw@gmail.com
-          tr
-            td Nana Ewusi
-            td 42
-            td
-              | 30% Favorable
-              i.fa.fa-frown-o.fa-lg.rating-frown
-            td
-              i.fa.fa-clock-o.icon
-              | Nov 1
-            td
-              a(href='#') mrewusi@gmail.com
+            td(colspan='5') No data to display
     .row.top-products
       .col-lg-12
         .products
           .header
             h4.header-text
-              i.fa.fa-thumbs-o-up
-              | Top Rated Products
+              i.fa.fa-coffee
+              | &nbsp;Top Rated Products
           .body
             .product-list.row
-              .col-lg-4.col
-                .product
-                  img.img-circle.img-thumbnail(src='assets/images/kit.jpg', width='100')
-                  div
-                    h5.name
-                      a(href='#') All-in-One Cigar Kit (63 Reviews)
-                    span.rating
-                      | 85% Favorable
-                      i.fa.fa-smile-o.fa-lg.rating-smile
-              .col-lg-4.col
-                .product
-                  img.img-circle.img-thumbnail(src='assets/images/beer.jpg', width='100')
-                  div
-                    h5.name
-                      a(href='#') Growler Beer Pints (89 Reviews)
-                    span.rating
-                      | 92% Favorable
-                      i.fa.fa-smile-o.fa-lg.rating-smile
-              .col-lg-4.col
-                .product
-                  img.img-circle.img-thumbnail(src='assets/images/wine.jpg', width='100')
-                  div
-                    h5.name
-                      a(href='#') Bota Wine Bag (54 Reviews)
-                    span.rating
-                      | 77% Favorable
-                      i.fa.fa-smile-o.fa-lg.rating-smile
-
-    .footer
-      .col-lg-6.copyright
-        div © 2013 PayButtonAfrica.
-      .col-lg-6.navup.align-right
-        a(href='#') Back to top
+              .col-lg-12
+                p No data to display
+    include footer

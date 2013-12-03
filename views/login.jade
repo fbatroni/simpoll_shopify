@@ -7,30 +7,11 @@ block pagespecificstyles
 
 block content
   .container
-    .header
-      ul.nav.nav-pills.pull-right
-        li.dropdown.active
-          a#drop2.dropdown-toggle(href='#', role='button', data-toggle='dropdown')
-              | Shoeshop-7
-              b.caret
-            ul.dropdown-menu(role='menu', aria-labelledby='drop2')
-              li(role='presentation')
-                a(role='menuitem', tabindex='-1', href='http://twitter.com/fat') Action
-              li(role='presentation')
-                a(role='menuitem', tabindex='-1', href='http://twitter.com/fat') Another action
-              li(role='presentation')
-                a(role='menuitem', tabindex='-1', href='http://twitter.com/fat') Something else here
-              li.divider(role='presentation')
-              li(role='presentation')
-                a(role='menuitem', tabindex='-1', href='http://twitter.com/fat') Separated link
-      h3.text-muted(style="display: inline-block")
-        a#pay-africa-button.btn.btn-success.btn-lg.pay-button-green(href='')
-          i.fa.fa-smile-o&nbsp;
-          | Simpoll Reviews
+    include header
     .row.install
-      .col-lg-12
+      .col-lg-12(style='margin-bottom: 2em;')
           h1(style='text-align: center; color: #16AD1C;') Login to your Account
-      .col-lg-12
+      .col-lg-12(style='margin-bottom: 4em;')
         if hasError
           p.lead.errorInfo Bad Login, Try Again :(
         form(role='form', action='/login', method='post')
@@ -38,9 +19,5 @@ block content
             input.form-control(type='text', name='shop', placeholder='Your Shop Name e.g. myshoeshop')
           .form-group
             input.form-control(type='password', name='password', placeholder='Enter your password')
-          button.btn.btn-success.btn-block(type='submit') Login
-    .footer
-      .col-lg-6.copyright
-        div © 2013 PayButtonAfrica.
-      .col-lg-6.navup.align-right
-        a(href='#') Back to top
+          button.btn.btn-primary.btn-block(type='submit') Login
+    include footer

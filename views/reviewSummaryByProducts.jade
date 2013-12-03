@@ -1,0 +1,78 @@
+extends layout
+
+block pagespecificstyles
+      link(rel="stylesheet"
+        type="text/css"
+        href="/stylesheets/reviewSummaryByProduct.css")
+
+block content
+  .container.dashbody
+    include header
+    .row
+      .col-lg-3.filter
+        .by-label
+          h4.caption.info.reviews-caption  - Products
+          ul.filter-list.list-unstyled
+            li.active
+              a(href='') All
+            li
+              a(href='') Most Popular
+            li
+              a(href='') Least Reviewed
+            li
+              a(href='') Most Reviewed
+            li
+              a(href='') Least Reviewed
+      #viewport.col-lg-9.viewport
+        .header
+          .col-lg-7
+            h3.header-text
+              i.fa.fa-shopping-cart.icon
+              | &nbsp;Showing All Products
+        .row.products
+          if products
+            each product in products
+              .col-lg-4.product
+                if product.favorability == 0 || product.favorability == 0.5
+                  .box-highlight.neutral
+                    .details
+                      .col-xs-3.icon-holder
+                        i.fa.fa-meh-o.fa-5x.icon
+                      .col-xs-9.description
+                        span.stat #{product.totalReviews}
+                        span.stat-label #{product.name}
+                    .action
+                      .col-lg-9
+                        a.view-more(href='/reviews/#{product._id}') View More
+                      .col-lg-3.arrow-holder
+                        a.view-more-arrow(href='#')
+                          i.fa.fa-arrow-circle-o-right
+                if product.favorability > 0 && product.favorability < 0.5
+                  .box-highlight.negative
+                    .details
+                      .col-xs-3.icon-holder
+                        i.fa.fa-frown-o.fa-5x.icon
+                      .col-xs-9.description
+                        span.stat #{product.totalReviews}
+                        span.stat-label #{product.name}
+                    .action
+                      .col-lg-9
+                        a.view-more(href='/reviews/#{product._id}') View More
+                      .col-lg-3.arrow-holder
+                        a.view-more-arrow(href='#')
+                          i.fa.fa-arrow-circle-o-right
+                if product.favorability > 0.5
+                  .box-highlight.positive
+                    .details
+                      .col-xs-3.icon-holder
+                        i.fa.fa-smile-o.fa-5x.icon
+                      .col-xs-9.description
+                        span.stat #{product.totalReviews}
+                        span.stat-label #{product.name}
+                    .action
+                      .col-lg-9
+                        a.view-more(href='/reviews/#{product._id}') View More
+                      .col-lg-3.arrow-holder
+                        a.view-more-arrow(href='#')
+                          i.fa.fa-arrow-circle-o-right
+    include footer
