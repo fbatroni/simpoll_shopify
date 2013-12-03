@@ -11,8 +11,8 @@ var apiKey, secret, session = {},
 	shop, shopToken;
 
 // IMPORT logger
-var logger = require('../../helpers/logger').logger;
-
+var LOGGER = require('../../helpers/logger').logger;
+var logger = new LOGGER();
 // TURN ON LOGGING
 logger.on();
 
@@ -51,13 +51,14 @@ function getOrdersForShop(shop, callback) {
 					else {
 						var _orders = [];
 						orders.forEach(function (item, index) {
+
 							var reviewSendDate = ISOToDate(item.updated_at);
 							reviewSendDate.setDate(reviewSendDate.getDate() + waitDays);
 							var _order = {
 								id: item.id,
 								name: item.name,
 								totalItems: item.line_items.length,
-								fulfilled_at: item.updated_at,
+								fulfilled_at: item.fulfillment_status,
 								placed_at: item.created_at,
 								review_sceduled_for: reviewSendDate,
 								reviewSent: false,

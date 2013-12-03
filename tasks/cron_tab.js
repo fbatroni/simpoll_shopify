@@ -12,10 +12,10 @@
 var Priest 		= require('./cron_job').init;
 
 // IMPORT logger
-var logger = require('../helpers/logger').logger;
-
+var LOGGER = require('../helpers/logger').logger;
+var logger = new LOGGER();
 // TURN ON LOGGING
-logger.on();
+logger.off();
 
 
 

@@ -10,7 +10,7 @@ var mongoose 		= 		require('mongoose'),
 var dbUriString = 	process.env.MONGOLAB_URI || process.env.MONGOHQ_URL  || 'mongodb://localhost/simpoll_shopify';
 
 mongoose.connect(dbUriString, function (err, conn) {
-	if (err) { 
+	if (err) {
 		console.log ('ERROR connecting to: ' + dbUriString + '. ' + err);
 	} else {
 		console.log ('Successfully connected to: ' + dbUriString);
@@ -79,7 +79,7 @@ var OrderSchema = new Schema({
     },
 	totalItems: Number,
 	products: [Number],
-	fulfilled_at: Date,
+	fulfilled_at: String,
 	placed_at: Date,
 	review_sceduled_for: Date,
 	reviewSent: Boolean,
@@ -93,7 +93,7 @@ var OrderSchema = new Schema({
 // Preferences
 var PreferenceSchema = new Schema({
 	leadTime: {
-		type: Number, 
+		type: Number,
 		default: 14
 	},
 	messageSubject: {
@@ -155,8 +155,8 @@ var ShopSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'PreferenceSchema'
     },
-	lastVisited: { type: Date, 
-		default: Date.now 
+	lastVisited: { type: Date,
+		default: Date.now
 	},
 	created_at: {
 		type: Date,

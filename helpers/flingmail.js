@@ -19,8 +19,8 @@ var mandrill        = require('mandrill-api/mandrill');
 
 
 // IMPORT logger
-var logger = require('./logger').logger;
-
+var LOGGER = require('./logger').logger;
+var logger = new LOGGER();
 // TURN ON LOGGING
 logger.on();
 

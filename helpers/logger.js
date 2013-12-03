@@ -1,25 +1,32 @@
 //SWITCH LOGGING ON AND OFF AT FILE LEVEL
 
+// TOGGLE THIS TO TURN LOGGING ON/OFF PROJECT WIDE
+var GLOBAL_STATE = true;
 
-function logger () {
+function SwitchLog () {
 	this.STATE = true;
+	this.GLOBAL_STATE = true;
 }
 
-logger.prototype.on = function () {
+SwitchLog.prototype.on = function () {
 	this.STATE = true;
 };
 
-logger.prototype.off = function () {
+SwitchLog.prototype.off = function () {
 	this.STATE = false;
-}
+};
 
-logger.prototype.getState = function () {
+SwitchLog.prototype.getState = function () {
 	return this.STATE;
+};
+
+SwitchLog.prototype.getGlobalState = function () {
+	return this.GLOBAL_STATE;
 }
 
-logger.prototype.log = function (msg) {
-	if (this.getState())
-		console.log(msg);
-}
+SwitchLog.prototype.log = function () {
+	if (this.getState() && GLOBAL_STATE)
+		console.log.apply(null, arguments);
+};
 
-module.exports.logger = new logger();
+module.exports.logger = SwitchLog;

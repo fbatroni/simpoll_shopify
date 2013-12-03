@@ -12,8 +12,8 @@
 var cronJob = require('cron').CronJob;
 
 // IMPORT logger
-var logger = require('../helpers/logger').logger;
-
+var LOGGER = require('../helpers/logger').logger;
+var logger = new LOGGER();
 // TURN ON LOGGING
 logger.on();
 
