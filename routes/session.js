@@ -170,7 +170,13 @@ var init = function(app, config) {
 				 });
 			});
 		});
-	})
+	});
+
+	// Logout
+	app.get('/logout', function (req, res) {
+		req.session.shop = null;
+		res.redirect('/');
+	});
 };
 
 exports.init = init;
