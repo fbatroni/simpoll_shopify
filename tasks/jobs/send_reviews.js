@@ -48,8 +48,8 @@ var Everest = {
 			    sched = new Date ( o_d.getFullYear(), o_d.getMonth(), o_d.getDate() );
 
 
-		    if (toDay >= sched && !order.reviewSent) callback(true);
-		    else				callback(false);
+		    if (toDay >= sched && !order.reviewSent && order.fulfillment_status) callback(true);
+		    else 	callback(false);
 		};
 
 		step.filter(orders, filter, function(_orders) {
@@ -123,7 +123,7 @@ var Everest = {
 
 
 function SendReviews() {
-	logger.log("starting outside waterfall");
+
 	require('async').waterfall([
 
 		Everest.crawl_orders,
@@ -131,6 +131,7 @@ function SendReviews() {
 		Everest.cook_email
 
 	], Everest.dispatch);
+
 }
 
 exports.init = SendReviews;
