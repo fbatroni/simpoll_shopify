@@ -3,7 +3,7 @@
   width: 85%;
 }
 .dashbody {
-	margin-top: 2.3em;
+	/*margin-top: 1.3em;*/
 }
 .dashbody .box-highlight {
 	border: 0px solid #eee;
@@ -160,13 +160,25 @@
 
 
 /*Style table border color*/
-.table-bordered > thead > tr > th, 
-.table-bordered > tbody > tr > th, 
-.table-bordered > tfoot > tr > th, 
-.table-bordered > thead > tr > td, 
-.table-bordered > tbody > tr > td, 
-.table-bordered > tfoot > tr > td {
+.top-reviewers .table-bordered > thead > tr > th, 
+.top-reviewers .table-bordered > tbody > tr > th, 
+.top-reviewers .table-bordered > tfoot > tr > th, 
+.top-reviewers .table-bordered > thead > tr > td, 
+.top-reviewers .table-bordered > tbody > tr > td, 
+.top-reviewers .table-bordered > tfoot > tr > td {
 	border: 1px solid #808080;
+	font-family: Raleway, 'Open Sans', sans-serif;
+	/*text-align: center;*/
+}
+
+/*Style table border color*/
+.bottom-reviewers .table-bordered > thead > tr > th, 
+.bottom-reviewers .table-bordered > tbody > tr > th, 
+.bottom-reviewers .table-bordered > tfoot > tr > th, 
+.bottom-reviewers .table-bordered > thead > tr > td, 
+.bottom-reviewers .table-bordered > tbody > tr > td, 
+.bottom-reviewers .table-bordered > tfoot > tr > td {
+	border: 1px solid #D84517;
 	font-family: Raleway, 'Open Sans', sans-serif;
 	/*text-align: center;*/
 }
@@ -175,6 +187,11 @@
 	background-color: #808080;
 	color: #fff;
 }
+.bottom-reviewers .header  {
+	background-color: #D84517;
+	color: #fff;
+}
+.bottom-reviewers .header .header-text,
 .top-reviewers .header .header-text {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 300;
