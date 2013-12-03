@@ -15,6 +15,15 @@ function save(products, callback) {
 	});
 }
 
+function all(callback) {
+	Product.find()
+	.sort('-created_at')
+	.exec(function (err, products) {
+		if (err) callback(err);
+		callback(null, products);
+	});
+}
+
 function byName(name, callback) {
 	Product.find()
 	.where('name')
@@ -35,6 +44,30 @@ function bySID(sid, callback) {
 	});
 }
 
+function byID(id, callback) {
+	Product.findById(id, function (err, product) {
+		if (err) callback(err);
+		else callback(null, product);
+	});
+}
+
+function stat(sid, reviewType, callback) {
+	bySID(sid, function (err, product) {
+		if (err) callback(err);
+		else {
+			var emotion = (reviewType == 'positives') ?
+							1 : 0;
+			Product.count({ emotion: emotion }, function (err, count) {
+			  if (err) callback(err);
+			  else callback(null, count);
+			});
+		}
+	});
+}
+
 exports.save = save;
+exports.all = all;
 exports.findByName = byName;
+exports.findById = byID;
 exports.findByShopifyID = bySID;
+exports.stats = stat;
