@@ -47,8 +47,8 @@ var Everest = {
 			    toDay = new Date ( t_d.getFullYear(), t_d.getMonth(), t_d.getDate() ),
 			    sched = new Date ( o_d.getFullYear(), o_d.getMonth(), o_d.getDate() );
 
-
-		    if (toDay >= sched && !order.reviewSent && order.fulfillment_status) callback(true);
+			// if (toDay >= sched && !order.reviewSent && order.fulfillment_status) callback(true);
+		    if ( toDay >= sched && !order.reviewSent ) callback(true);
 		    else 	callback(false);
 		};
 

@@ -15,7 +15,7 @@ var Priest 		= require('./cron_job').init;
 var LOGGER = require('../helpers/logger').logger;
 var logger = new LOGGER();
 // TURN ON LOGGING
-logger.off();
+logger.on();
 
 
 
