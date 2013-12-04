@@ -41,6 +41,12 @@ var init = function(app, config) {
 		});
 	});
 
+	app.post('/new_order', function (req, res) {
+		console.log(req.body);
+		res.statusCode = 200;
+		res.end();
+	});
+
 	// Signup - Merchant clicked install, start the authentication process
 	app.post('/signup/install', authenticate);
 

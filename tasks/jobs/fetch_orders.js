@@ -35,52 +35,64 @@ function ISOToDate(ISOString) {
 
 function getOrdersForShop(shop, callback) {
 	session = nodify.createSession(shop.name, apiKey, secret, shop.token);
-	if(session.valid()){
-		if (shop.latestOrderDate) {
-			shop.latestOrderDate.setSeconds(shop.latestOrderDate.getSeconds() + 1); // Set latest order date a millisecond after what it really is - This prevents us fetching the current latest order again
-		} else {
-			shop.created_at.setHours(shop.created_at.getHours() - 5); // Convert to EST
-		}
-		session.order.all({
-			created_at_min: (shop.latestOrderDate) ? shop.latestOrderDate.toISOString() : shop.created_at.toISOString()
-		}, function(err, orders){
-			if (err) callback(err);
-			else {
-				Shop.daysToWait(shop.name, function (err, waitDays) {
-					if (err) callback(err);
-					else {
-						var _orders = [];
-						orders.forEach(function (item, index) {
 
-							var reviewSendDate = ISOToDate(item.updated_at);
-							reviewSendDate.setDate(reviewSendDate.getDate() + waitDays);
-							var _order = {
-								id: item.id,
-								name: item.name,
-								totalItems: item.line_items.length,
-								fulfilled_at: item.fulfillment_status,
-								placed_at: item.created_at,
-								review_sceduled_for: reviewSendDate,
-								reviewSent: false,
-								_customer: {
-									firstName: item.customer.first_name,
-									lastName: item.customer.last_name,
-									email: item.customer.email
-								},
-								_products: [],
-								_shop: shop.name
-							};
-							for (var i = 0; i < item.line_items.length; i++) {
-								_order._products.push(item.line_items[i].product_id);
-							}
-							_orders.push(_order);
-						});
-						callback(null, _orders);
-					}
-				});
-			}
-		});
-	}
+	// if (session.valid()) {
+	// 	console.log("OUTSIDE CREATE WEBHOOK");
+	// 	session.webhook.create ({
+	// 		"topic" : "orders/fulfilled",
+	// 		"address": "http://5093a696.ngrok.com/new_order",
+	// 		"format" : "json"
+	// 	}, function(err, data) {
+	// 		console.log("LOGGING WEBHOOK RESPONSE", data, err);
+	// 	});
+	// }
+
+	// if(session.valid()){
+	// 	if (shop.latestOrderDate) {
+	// 		shop.latestOrderDate.setSeconds(shop.latestOrderDate.getSeconds() + 1); // Set latest order date a millisecond after what it really is - This prevents us fetching the current latest order again
+	// 	} else {
+	// 		shop.created_at.setHours(shop.created_at.getHours() - 5); // Convert to EST
+	// 	}
+	// 	session.order.all({
+	// 		created_at_min: (shop.latestOrderDate) ? shop.latestOrderDate.toISOString() : shop.created_at.toISOString()
+	// 	}, function(err, orders){
+	// 		if (err) callback(err);
+	// 		else {
+	// 			Shop.daysToWait(shop.name, function (err, waitDays) {
+	// 				if (err) callback(err);
+	// 				else {
+	// 					var _orders = [];
+	// 					orders.forEach(function (item, index) {
+
+	// 						var reviewSendDate = ISOToDate(item.updated_at);
+	// 						reviewSendDate.setDate(reviewSendDate.getDate() + waitDays);
+	// 						var _order = {
+	// 							id: item.id,
+	// 							name: item.name,
+	// 							totalItems: item.line_items.length,
+	// 							fulfilled_at: item.fulfillment_status,
+	// 							placed_at: item.created_at,
+	// 							review_sceduled_for: reviewSendDate,
+	// 							reviewSent: false,
+	// 							_customer: {
+	// 								firstName: item.customer.first_name,
+	// 								lastName: item.customer.last_name,
+	// 								email: item.customer.email
+	// 							},
+	// 							_products: [],
+	// 							_shop: shop.name
+	// 						};
+	// 						for (var i = 0; i < item.line_items.length; i++) {
+	// 							_order._products.push(item.line_items[i].product_id);
+	// 						}
+	// 						_orders.push(_order);
+	// 					});
+	// 					callback(null, _orders);
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// }
 }
 
 function getAllOrders(shops, callback) {
