@@ -1,6 +1,13 @@
 /*
 * Module Dependencies
 */
+
+// IMPORT logger
+var LOGGER = require('../../helpers/logger').logger;
+var logger = new LOGGER({location:"fetch_orders.js -> "});
+// TURN ON LOGGING
+logger.on();
+
 var mongoose = require('mongoose'),
 	Customer = mongoose.model('Customer');
 

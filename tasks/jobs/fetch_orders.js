@@ -36,17 +36,6 @@ function ISOToDate(ISOString) {
 function getOrdersForShop(shop, callback) {
 	session = nodify.createSession(shop.name, apiKey, secret, shop.token);
 
-	// if (session.valid()) {
-	// 	console.log("OUTSIDE CREATE WEBHOOK");
-	// 	session.webhook.create ({
-	// 		"topic" : "orders/fulfilled",
-	// 		"address": "http://5093a696.ngrok.com/new_order",
-	// 		"format" : "json"
-	// 	}, function(err, data) {
-	// 		console.log("LOGGING WEBHOOK RESPONSE", data, err);
-	// 	});
-	// }
-
 	if(session.valid()){
 		if (shop.latestOrderDate) {
 			shop.latestOrderDate.setSeconds(shop.latestOrderDate.getSeconds() + 1); // Set latest order date a millisecond after what it really is - This prevents us fetching the current latest order again

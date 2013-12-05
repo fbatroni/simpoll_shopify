@@ -2,6 +2,12 @@
 * Module Dependencies
 */
 
+// IMPORT logger
+var LOGGER = require('../helpers/logger').logger;
+var logger = new LOGGER({location:"db.js -> "});
+// TURN ON LOGGING
+logger.on();
+
 var mongoose 		= 		require('mongoose'),
 	moment 			= 		require('moment'),
 	Schema 			= 		mongoose.Schema;
@@ -11,9 +17,9 @@ var dbUriString = 	process.env.MONGOLAB_URI || process.env.MONGOHQ_URL  || 'mong
 
 mongoose.connect(dbUriString, function (err, conn) {
 	if (err) {
-		console.log ('ERROR connecting to: ' + dbUriString + '. ' + err);
+		logger.log ('ERROR connecting to: ' + dbUriString + '. ' + err);
 	} else {
-		console.log ('Successfully connected to: ' + dbUriString);
+		logger.log ('Successfully connected to: ' + dbUriString);
 	}
 });
 
