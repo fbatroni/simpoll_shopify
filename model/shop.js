@@ -1,3 +1,9 @@
+// IMPORT logger
+var LOGGER = require('../helpers/logger').logger;
+var logger = new LOGGER({location:"fetch_orders.js -> "});
+// TURN ON LOGGING
+logger.on();
+
 /*
 * Module Dependencies
 */
@@ -74,19 +80,27 @@ function findAndUpdate(query, update, options, callback) {
 }
 
 function daysToWait(shopName, callback) {
-	Shop
-	.findOne({ name: shopName })
-	.exec(function (err, shop) {
-		if (err) callback(err);
-		else {
-			Preferences
-			.findOne({_id: shop.preferences})
-			.exec(function (err, preferences) {
-				if (err) callback(err);
-				else callback(null, preferences.leadTime);
-			})
-		}
-	})
+	try {
+		Shop
+		.findOne({ name: shopName })
+		.exec(function (err, shop) {
+			if (err) callback(err);
+			else {
+				Preferences
+				.findOne({_id: shop.preferences})
+				.exec(function (err, preferences) {
+					try {
+						if (err) callback(err);
+						else callback(null, preferences.leadTime);
+					} catch(err2) {
+						logger.log("Exception: leadTime not ready", err);
+					}
+				})
+			}
+		});
+	} catch(err) {
+		logger.log("Exception: You Shouldn't see this: ", err);
+	}
 }
 
 exports.all = all;

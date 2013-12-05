@@ -1,6 +1,4 @@
 
-var Webhook = require('../tasks/jobs/create_webhooks');
-
 // IMPORT logger
 var LOGGER = require('../helpers/logger').logger;
 var logger = new LOGGER({location:"session.js -> "});
@@ -125,7 +123,7 @@ var init = function(app, config) {
 			config.session.active.product.all({}, function(err, products){
 				if(err) callback(err);
 				else {
-					logger.log('products:',products);
+					// logger.log('products:',products);
 					callback(null, products);
 				}
 			});
@@ -172,7 +170,6 @@ var init = function(app, config) {
 				 			Shop.saveProducts(shop, savedProducts, function (err) {
 				 				if (err) res.send('Error updating Shop with products');
 				 				else {
-				 					Webhook.install();
 				 					res.redirect('/preferences/new');
 				 				}
 				 			});

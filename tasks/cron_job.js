@@ -55,7 +55,7 @@ High_Priest.prototype.recurring_job = function() {
 	 var _args = this._args || {};
 	 logger.log(this.name+ ' Job starting... at '+ this.started);
 	 new cronJob({
-	 	cronTime : _args.run_at   	 || this.BY_MINUTE,
+	 	cronTime : _args.run_at   	 || this.BY_SECOND,
 	 	onTick	 : _args.job_handle  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},
 	 	start	 : _args.start       || true,
 	 	timeZone : _args.timeZone    || this.TIME_ZONE,
@@ -80,7 +80,7 @@ High_Priest.prototype.one_time_job = function(_args) {
 
 	new cronJob(
 		_args.date        || new Date(),
-		_args.job_handle  || function(){console.log("Default Job Handler! Provide One For Custom Impl!")},
+		_args.job_handle  || function(){logger.log("Default Job Handler! Provide One For Custom Impl!")},
 		_args.start       || true,
 		_args.timeZone    || this.TIME_ZONE
 	);

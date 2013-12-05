@@ -1,5 +1,6 @@
 // Dependencies
-var Preferences = require('../model/preferences'),
+var Webhook     = require('../tasks/jobs/create_webhooks'),
+	Preferences = require('../model/preferences'),
 	Shop 		= require('../model/shop'),
 	step		= require('async');
 
@@ -53,7 +54,10 @@ var init = function(app, config) {
 				    }
 				], function (err) {
 				   	if (err) res.send(err.message);
-				  	else res.redirect('/');
+				  	else {
+				  		Webhook.install(req.session.shop);
+				  		res.redirect('/');
+				  	}
 				});
 			}
 		});

@@ -3,7 +3,7 @@
 */
 
 // IMPORT logger
-var LOGGER = require('../../helpers/logger').logger;
+var LOGGER = require('../helpers/logger').logger;
 var logger = new LOGGER({location:"fetch_orders.js -> "});
 // TURN ON LOGGING
 logger.on();

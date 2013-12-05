@@ -1,5 +1,6 @@
 
-var nodify   = require('nodify-shopify');
+var nodify   = require('nodify-shopify'),
+	Shop     = require('../../model/shop');
 
 // IMPORT logger
 var LOGGER = require('../../helpers/logger').logger;
@@ -21,20 +22,27 @@ else {
 } // Key & Secret Set
 
 
+exports.install = function install(shop) {
 
-exports.install = function () {
+	try {
 
-	session = nodify.createSession(shop.name, apiKey, secret, shop.token);
+		session = nodify.createSession(shop.name, apiKey, secret, shop.token);
 
-	if (session.valid()) {
-		logger.log("OUTSIDE CREATE WEBHOOK");
-		session.webhook.create ({
-			"topic" : "orders/fulfilled",
-			"address": "http://5093a696.ngrok.com/new_order",
-			"format" : "json"
-		}, function(err, data) {
-			logger.log("LOGGING WEBHOOK RESPONSE", data, err);
-		});
+		if (session.valid()) {
+			logger.log("OUTSIDE CREATE WEBHOOK");
+			session.webhook.create ({
+				"topic" : "orders/fulfilled",
+				"address": "https://5093a696.ngrok.com -> 127.0.0.1:3000/new_order",
+				"format" : "json"
+			}, function(err, data) {
+				logger.log("LOGGING WEBHOOK RESPONSE", data, err);
+			});
+		}
+		logger.log("Webhook run successfully");
+
+	} catch(err) {
+		logger.log("Exception: Shop Not Ready!", err);
+		install();
 	}
 };
 
