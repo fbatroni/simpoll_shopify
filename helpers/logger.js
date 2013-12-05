@@ -3,9 +3,10 @@
 // TOGGLE THIS TO TURN LOGGING ON/OFF PROJECT WIDE
 var GLOBAL_STATE = true;
 
-function SwitchLog () {
+function SwitchLog (_args) {
 	this.STATE = true;
 	this.GLOBAL_STATE = true;
+	this.location = _args.location;
 }
 
 SwitchLog.prototype.on = function () {
@@ -22,11 +23,14 @@ SwitchLog.prototype.getState = function () {
 
 SwitchLog.prototype.getGlobalState = function () {
 	return this.GLOBAL_STATE;
-}
+};
 
 SwitchLog.prototype.log = function () {
+	var args = [].slice.call(arguments);
+	args.unshift(this.location);
+
 	if (this.getState() && GLOBAL_STATE)
-		console.log.apply(null, arguments);
+		console.log.apply(null, args);
 };
 
 module.exports.logger = SwitchLog;

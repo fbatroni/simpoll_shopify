@@ -1,3 +1,13 @@
+
+var Webhook = require('../tasks/jobs/create_webhooks');
+
+// IMPORT logger
+var LOGGER = require('../helpers/logger').logger;
+var logger = new LOGGER({location:"session.js -> "});
+// TURN ON LOGGING
+logger.on();
+
+
 // Dependencies
 var Pass = require('../helpers/password'),
 	Shop = require('../model/shop'),
@@ -34,7 +44,7 @@ var init = function(app, config) {
 
 	// Signup - Shop account created, ask them to install our app
 	app.get('/signup/install', function (req, res) {
-		console.log(req.session.shop);
+		logger.log(req.session.shop);
 		res.render('install', {
 			title: 'Simpoll Reviews - Install Our Widget',
 			shop: req.session.shop
@@ -42,7 +52,7 @@ var init = function(app, config) {
 	});
 
 	app.post('/new_order', function (req, res) {
-		console.log(req.body);
+		logger.log(req.body);
 		res.statusCode = 200;
 		res.end();
 	});
@@ -93,17 +103,17 @@ var init = function(app, config) {
 	function authenticate(req, res) {
 		var shop = req.body.shop;
 		if(shop !== undefined && shop !== null) {
-		  	console.log('creating a session for', shop, config.apiKey, config.secret);
+		  	logger.log('creating a session for', shop, config.apiKey, config.secret);
 			config.session.active = config.nodify.createSession(shop, config.apiKey, config.secret, {
 			    scope: {orders: "read", products: "read"},
 			    uriForTemporaryToken: "http://"+req.headers.host+"/login/finalize/token",
 			    onAskToken: function onToken (err, url) {
-			    	console.log('Heyyyyyyy: ' + url);
+			    	logger.log('Heyyyyyyy: ' + url);
 			    	res.redirect(url);
 			    }
 		  	});
 		} else {
-	  	console.log('no shop, go login')
+	  	logger.log('no shop, go login')
 			res.redirect('/login');
 		}
 	}
@@ -111,11 +121,11 @@ var init = function(app, config) {
 	function fetchProducts (shop, key, callback) {
 		config.session.active = config.nodify.createSession(shop, config.apiKey, config.secret, key);
 		if(config.session.active.valid()){
-			console.log('session is valid for <',shop,'>');
+			logger.log('session is valid for <',shop,'>');
 			config.session.active.product.all({}, function(err, products){
 				if(err) callback(err);
 				else {
-					console.log('products:',products);
+					logger.log('products:',products);
 					callback(null, products);
 				}
 			});
@@ -129,7 +139,7 @@ var init = function(app, config) {
 		}
 		// Request permanent token
 		config.session.active.requestPermanentAccessToken(req.query.code, function onPermanentAccessToken(token) {
-			console.log('Authenticated on shop <', req.query.shop, '/', config.session.active.store_name, '> with token <', token, '>')
+			logger.log('Authenticated on shop <', req.query.shop, '/', config.session.active.store_name, '> with token <', token, '>')
 
 			// Add shop token and url to the session
 			req.session.shop.token = token;
@@ -144,7 +154,7 @@ var init = function(app, config) {
 				url: config.session.active.url
 			}, {}, function (err, shop) {
 				if (err) throw err;
-				console.log(shop + ' updated');
+				logger.log(shop + ' updated');
 				fetchProducts(req.session.shop.name, req.session.shop.token,
 				 function (err, products) {
 				 	var _products = [];
@@ -162,6 +172,7 @@ var init = function(app, config) {
 				 			Shop.saveProducts(shop, savedProducts, function (err) {
 				 				if (err) res.send('Error updating Shop with products');
 				 				else {
+				 					Webhook.install();
 				 					res.redirect('/preferences/new');
 				 				}
 				 			});

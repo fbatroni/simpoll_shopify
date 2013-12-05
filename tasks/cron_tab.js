@@ -13,7 +13,7 @@ var Priest 		= require('./cron_job').init;
 
 // IMPORT logger
 var LOGGER = require('../helpers/logger').logger;
-var logger = new LOGGER();
+var logger = new LOGGER({location:"cron_tab.js -> "});
 // TURN ON LOGGING
 logger.on();
 
@@ -22,7 +22,6 @@ logger.on();
 // LOAD JOBS
 var FetchOrders = require('./jobs/fetch_orders').init,
 	SendReviews	= require('./jobs/send_reviews').init,
-	UpdateOrder = require('./jobs/update_order').init,
 	Webhooks    = require('./jobs/create_webhooks').init;
 
 
@@ -42,12 +41,6 @@ var SendReviewsJob = new Priest({
 	desc       : "Send Emails Requesting For Reviews"
 });
 
-var UpdateOrderJob = new Priest({
-	job_handle : UpdateOrder,
-	name	   : "Update Orders",
-	desc       : "update delivery status of unfulfilled orders"
-});
-
 var WebhooksJob    = new Priest({
 	job_handle : Webhooks,
 	name 	   : "Create Webhooks",
@@ -58,4 +51,4 @@ var WebhooksJob    = new Priest({
 // START JOBS
 FetchOrdersJob.start(1);
 SendReviewsJob.start(1);
-// WebhooksJob.start(0);
+WebhooksJob.start(0);

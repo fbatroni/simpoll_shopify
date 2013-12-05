@@ -21,7 +21,7 @@ var jade = require('jade');
 
 // IMPORT logger
 var LOGGER = require('../../helpers/logger').logger;
-var logger = new LOGGER();
+var logger = new LOGGER({location:"send_reviews.js -> "});
 // TURN ON LOGGING
 logger.on();
 

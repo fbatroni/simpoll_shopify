@@ -20,7 +20,7 @@ var mandrill        = require('mandrill-api/mandrill');
 
 // IMPORT logger
 var LOGGER = require('./logger').logger;
-var logger = new LOGGER();
+var logger = new LOGGER({location:"flingmail.js -> "});
 // TURN ON LOGGING
 logger.on();
 
