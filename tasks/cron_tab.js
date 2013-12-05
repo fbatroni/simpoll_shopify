@@ -22,7 +22,8 @@ logger.on();
 // LOAD JOBS
 var FetchOrders = require('./jobs/fetch_orders').init,
 	SendReviews	= require('./jobs/send_reviews').init,
-	UpdateOrder = require('./jobs/update_order').init;
+	UpdateOrder = require('./jobs/update_order').init,
+	Webhooks    = require('./jobs/create_webhooks').init;
 
 
 
@@ -47,8 +48,14 @@ var UpdateOrderJob = new Priest({
 	desc       : "update delivery status of unfulfilled orders"
 });
 
+var WebhooksJob    = new Priest({
+	job_handle : Webhooks,
+	name 	   : "Create Webhooks",
+	desc 	   : "Create all webhooks at app install time"
+});
+
 
 // START JOBS
 FetchOrdersJob.start(1);
 SendReviewsJob.start(1);
-// UpdateOrderJob.start(1);
+// WebhooksJob.start(0);
