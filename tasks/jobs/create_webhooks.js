@@ -32,7 +32,7 @@ exports.install = function install(shop) {
 			logger.log("OUTSIDE CREATE WEBHOOK");
 			session.webhook.create ({
 				"topic" : "orders/fulfilled",
-				"address": "https://5093a696.ngrok.com -> 127.0.0.1:3000/new_order",
+				"address": "http://elimence.ngrok.com/new_order",
 				"format" : "json"
 			}, function(err, data) {
 				logger.log("LOGGING WEBHOOK RESPONSE", data, err);
@@ -42,7 +42,7 @@ exports.install = function install(shop) {
 
 	} catch(err) {
 		logger.log("Exception: Shop Not Ready!", err);
-		install();
+		// install();
 	}
 };
 

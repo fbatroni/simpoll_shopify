@@ -12,8 +12,8 @@ var Mailer = require('../../helpers/flingmail').init,
 	step   = require('async');
 
 // LOAD DB MODULE INTERFACES
-var	get_orders     = require('../../model/order').all,
-	get_email_info = require('../../model/order').emailInfo,
+var	get_orders         = require('../../model/order').all,
+	get_email_info     = require('../../model/order').emailInfo,
 	flag_order_as_sent = require('../../model/order').flagAsSent;
 
 // LOAD JADE
