@@ -69,6 +69,7 @@ var CustomerSchema = new Schema({
 	firstName: String,
 	lastName: String,
 	email: String,
+	shopifyID: String,
 	created_at: {
 		type: Date,
 		default: Date.now
