@@ -32,5 +32,16 @@ function byID(id, callback) {
 	});
 }
 
+function byShopifyID(id, callback) {
+	Customer.findOne({
+		shopifyID: id
+	})
+	.exec(function (err, customer) {
+		if (err) callback(err);
+		else callback(null, customer);
+	});
+}
+
 exports.save = save;
 exports.findByID = byID;
+exports.findByShopifyID = byShopifyID;
