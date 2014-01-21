@@ -138,7 +138,6 @@ function saveOrdersForShop(shopOrders, callback) {
 		} else {
 			callback(null, 'a shop has no orders to save');
 		}
-
 	});
 }
 
