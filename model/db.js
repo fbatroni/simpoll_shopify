@@ -24,6 +24,13 @@ mongoose.connect(dbUriString, function (err, conn) {
 });
 
 // Schema & Model Definitions
+// Webhook
+var WebhookSchema = new Schema({
+	shop: String,
+  topic: String,
+	shopifyID: String,
+});
+
 // Reviews Tally
 var ReviewTallySchema = new Schema({
 	reviewer: {
@@ -179,3 +186,4 @@ mongoose.model( 'Order', OrderSchema );
 mongoose.model( 'Customer', CustomerSchema );
 mongoose.model( 'Review', ReviewSchema );
 mongoose.model( 'ReviewTally', ReviewTallySchema );
+mongoose.model( 'Webhook', WebhookSchema );
