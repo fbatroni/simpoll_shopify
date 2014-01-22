@@ -10,6 +10,7 @@ logger.on();
 var Pass = require('../helpers/password'),
 	Shop = require('../model/shop'),
 	Product = require('../model/product'),
+	Customer = require('../model/customer'),
 	step = require('async');
 
 var init = function(app, config) {
@@ -49,8 +50,89 @@ var init = function(app, config) {
 		});
 	});
 
+
+	// Helpers
+	function ISOToDate(ISOString) {
+	  return new Date(ISOString);
+	}
+
+	// Save the customer object that the customer field in the Order Object will point to
+	// This is so we can use the _id value of that object as a ref
+	function saveOrderCustomer(order, callback) {
+	  Customer.save(order._customer, function (err, customer) {
+	    if (err) callback(err);
+	    else callback(null, customer);
+	  })
+	}
+
 	app.post('/new_order', function (req, res) {
+		var data = request.body;
 		logger.log(req.body);
+
+	  // Prepare Order Data & Save
+  		Shop.daysToWait(shop.name, function (err, daysToWait) { //Get shops waiting time prior to sending reviews
+	    	if (err) throw err;
+			else {
+			  // Set date for customer to be asked for a review
+			  var reviewSendDate = ISOToDate(data.updated_at);
+			  reviewSendDate.setDate(reviewSendDate.getDate() + daysToWait);
+
+			  // Get an array of Line Item IDs
+			  var shopifyProudctIDS = [];
+			  for (var i = 0; i < data.line_items.length; i++) {
+			    shopifyProudctIDS.push(data.line_items[i].product_id);
+			  }
+
+			  // The customers info
+			  var theCustomer = {
+			    firstName   : data.customer.first_name,
+			    lastName    : data.customer.last_name,
+			    email       : data.customer.email,
+			    shopifyID   : data.customer.id
+			  };
+
+			  // Interim Order Object
+			  var order = {
+			    id: data.id,
+			    name: data.name,
+			    totalItems: data.line_items.length,
+			    fulfilled_at: data.fulfillment_status,
+			    placed_at: data.created_at,
+			    review_sceduled_for: reviewSendDate,
+			    reviewSent: false,
+			    customer: {},
+			    products: shopifyProudctIDS,
+			    _shop: shop.name
+			  };
+
+			  // Fetch customer data for associating with this new order or
+			  // Save new customer if no existing customer matches
+			  Customer.byShopifyID(data.customer.id, function (err, customer) {
+			    if (err) throw err;
+			    if (customer) { // Customer exists, so associate the new order with this customer
+			      order.customer = customer._id;
+			      // Now save the order
+			      Order.save(order, function (err, savedOrder) {
+			        if (err) throw err;
+			        else logger.log('Saved Order: ', savedOrder);
+			      })
+			    } else { // No match, Create new customer
+			      Customer.save(theCustomer, function (err, newCustomer) {
+			      if (err) throw err;
+			        order.customer = customer._id;
+			        // Now save the order
+			        Order.save(order, function (err, savedOrder) {
+			          if (err) throw err;
+			          else logger.log('Saved Order: ', savedOrder);
+			        })
+			      });
+			    }
+			  });
+			}
+	  });
+
+
+
 		res.statusCode = 200;
 		res.end();
 	});

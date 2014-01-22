@@ -55,8 +55,17 @@ var init = function(app, config) {
 				], function (err) {
 				   	if (err) res.send(err.message);
 				  	else {
-				  		Webhook.install(req.session.shop);
-				  		res.redirect('/');
+				  		Webhook.install(req.session.shop, function (err, data, invalidSession) {
+				  			if (err) res.send('Oops. Something went wrong! : '+ err);
+				  			else {
+				  				if (invalidSession) res.redirect('/login');
+				  				else {
+				  					console.log(data);
+				  					res.redirect('/');
+				  				}
+				  			}
+				  		});
+
 				  	}
 				});
 			}
