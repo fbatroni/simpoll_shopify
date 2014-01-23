@@ -66,8 +66,11 @@ var init = function(app, config) {
 	}
 
 	app.post('/new_order', function (req, res) {
-		var data = request.body;
+		var data = req.body;
 		logger.log(req.body);
+
+		// req has no session.shop, create shop object by using vendor name in order object
+		shop = req.session.shop;
 
 	  // Prepare Order Data & Save
   		Shop.daysToWait(shop.name, function (err, daysToWait) { //Get shops waiting time prior to sending reviews

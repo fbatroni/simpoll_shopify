@@ -27,8 +27,11 @@ mongoose.connect(dbUriString, function (err, conn) {
 // Webhook
 var WebhookSchema = new Schema({
 	shop: String,
-  topic: String,
+  	topic: String,
 	shopifyID: String,
+	created_at: Date,
+	updated_at: Date,
+	address: String
 });
 
 // Reviews Tally

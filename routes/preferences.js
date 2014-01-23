@@ -2,6 +2,7 @@
 var Webhook     = require('../tasks/jobs/create_webhooks'),
 	Preferences = require('../model/preferences'),
 	Shop 		= require('../model/shop'),
+	SavedHooks	= require('../model/webhook'),
 	step		= require('async');
 
 var init = function(app, config) {
@@ -56,10 +57,26 @@ var init = function(app, config) {
 				   	if (err) res.send(err.message);
 				  	else {
 				  		Webhook.install(req.session.shop, function (err, data, invalidSession) {
-				  			if (err) res.send('Oops. Something went wrong! : '+ err);
+				  			// if (err) res.send('Oops. Something went wrong! : '+ err);
+				  			if (err) {
+				  				console.log("Something's not right! Probably a webhook exists already for the stated topic");
+				  				res.send('click <a href="/">here</a> to go home');
+							}
 				  			else {
 				  				if (invalidSession) res.redirect('/login');
 				  				else {
+				  					// all things went well, shopify responded with details of created webhook + id
+				  					SavedHooks.save(data, function(err, data) {
+				  						if (err) throw err;
+				  						else console.log("webhook saved: ", {
+				  							shop: req.session.shop.name,
+				  							shopifyID: data.id,
+				  							topic: data.topic,
+				  							created_at: data.created_at,
+				  							updated_at: data.updated_at,
+				  							address: data.address
+				  						});
+				  					})
 				  					console.log(data);
 				  					res.redirect('/');
 				  				}
