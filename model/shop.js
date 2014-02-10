@@ -1,6 +1,6 @@
 // IMPORT logger
 var LOGGER = require('../helpers/logger').logger;
-var logger = new LOGGER({location:"fetch_orders.js -> "});
+var logger = new LOGGER({location:"shop.js -> "});
 // TURN ON LOGGING
 logger.on();
 
@@ -35,6 +35,16 @@ function byName(name, callback) {
 	Shop.find()
 	.where('name')
 	.equals(name)
+	.exec(function (err, shops) {
+		if (err) callback(err);
+		else callback(null, shops[0]);
+	});
+}
+
+function byUrl(url, callback) {
+	Shop.find()
+	.where('url')
+	.equals(url)
 	.exec(function (err, shops) {
 		if (err) callback(err);
 		else callback(null, shops[0]);
@@ -107,6 +117,7 @@ exports.all = all;
 exports.save = save;
 exports.findAndUpdate = findAndUpdate;
 exports.findByName = byName;
+exports.findByUrl  = byUrl;
 exports.savePreferences = addPreference;
 exports.saveProducts = addProducts;
 exports.saveOrders = addOrders;

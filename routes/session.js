@@ -67,77 +67,78 @@ var init = function(app, config) {
 
 	app.post('/new_order', function (req, res) {
 		var data = req.body;
-		logger.log(req.body);
+		var shopURL = req.headers['x-shopify-shop-domain'];
+		logger.log("WEBHOOK HIT");
 
 		// req has no session.shop, create shop object by using vendor name in order object
-		shop = req.session.shop;
+		shop = Shop.findByUrl(shopURL, function(err, shop) {
+		  // Prepare Order Data & Save
+	  		Shop.daysToWait(shop.name, function (err, daysToWait) { //Get shops waiting time prior to sending reviews
+		    	if (err) throw err;
+				else {
+				  // Set date for customer to be asked for a review
+				  var reviewSendDate = ISOToDate(data.updated_at);
+				  reviewSendDate.setDate(reviewSendDate.getDate() + daysToWait);
 
-	  // Prepare Order Data & Save
-  		Shop.daysToWait(shop.name, function (err, daysToWait) { //Get shops waiting time prior to sending reviews
-	    	if (err) throw err;
-			else {
-			  // Set date for customer to be asked for a review
-			  var reviewSendDate = ISOToDate(data.updated_at);
-			  reviewSendDate.setDate(reviewSendDate.getDate() + daysToWait);
+				  // Get an array of Line Item IDs
+				  var shopifyProudctIDS = [];
+				  for (var i = 0; i < data.line_items.length; i++) {
+				    shopifyProudctIDS.push(data.line_items[i].product_id);
+				  }
 
-			  // Get an array of Line Item IDs
-			  var shopifyProudctIDS = [];
-			  for (var i = 0; i < data.line_items.length; i++) {
-			    shopifyProudctIDS.push(data.line_items[i].product_id);
-			  }
+				  // The customers info
+				  var theCustomer = {
+				    firstName   : data.customer.first_name,
+				    lastName    : data.customer.last_name,
+				    email       : data.customer.email,
+				    shopifyID   : data.customer.id
+				  };
 
-			  // The customers info
-			  var theCustomer = {
-			    firstName   : data.customer.first_name,
-			    lastName    : data.customer.last_name,
-			    email       : data.customer.email,
-			    shopifyID   : data.customer.id
-			  };
+				  // Interim Order Object
+				  var order = {
+				    id: data.id,
+				    name: data.name,
+				    totalItems: data.line_items.length,
+				    fulfilled_at: data.fulfillment_status,
+				    placed_at: data.created_at,
+				    review_sceduled_for: reviewSendDate,
+				    reviewSent: false,
+				    customer: {},
+				    products: shopifyProudctIDS,
+				    _shop: shop.name
+				  };
 
-			  // Interim Order Object
-			  var order = {
-			    id: data.id,
-			    name: data.name,
-			    totalItems: data.line_items.length,
-			    fulfilled_at: data.fulfillment_status,
-			    placed_at: data.created_at,
-			    review_sceduled_for: reviewSendDate,
-			    reviewSent: false,
-			    customer: {},
-			    products: shopifyProudctIDS,
-			    _shop: shop.name
-			  };
-
-			  // Fetch customer data for associating with this new order or
-			  // Save new customer if no existing customer matches
-			  Customer.byShopifyID(data.customer.id, function (err, customer) {
-			    if (err) throw err;
-			    if (customer) { // Customer exists, so associate the new order with this customer
-			      order.customer = customer._id;
-			      // Now save the order
-			      Order.save(order, function (err, savedOrder) {
-			        if (err) throw err;
-			        else logger.log('Saved Order: ', savedOrder);
-			      })
-			    } else { // No match, Create new customer
-			      Customer.save(theCustomer, function (err, newCustomer) {
-			      if (err) throw err;
-			        order.customer = customer._id;
-			        // Now save the order
-			        Order.save(order, function (err, savedOrder) {
-			          if (err) throw err;
-			          else logger.log('Saved Order: ', savedOrder);
-			        })
-			      });
-			    }
-			  });
-			}
-	  });
+				  // Fetch customer data for associating with this new order or
+				  // Save new customer if no existing customer matches
+				  Customer.byShopifyID(data.customer.id, function (err, customer) {
+				    if (err) throw err;
+				    if (customer) { // Customer exists, so associate the new order with this customer
+				      order.customer = customer._id;
+				      // Now save the order
+				      Order.save(order, function (err, savedOrder) {
+				        if (err) throw err;
+				        else logger.log('Saved Order: ', savedOrder);
+				      })
+				    } else { // No match, Create new customer
+				      Customer.save(theCustomer, function (err, newCustomer) {
+				      if (err) throw err;
+				        order.customer = customer._id;
+				        // Now save the order
+				        Order.save(order, function (err, savedOrder) {
+				          if (err) throw err;
+				          else logger.log('Saved Order: ', savedOrder);
+				        })
+				      });
+				    }
+				  });
+				}
+		  });
+		});
 
 
 
-		res.statusCode = 200;
-		res.end();
+		// res.statusCode = 200;
+		// res.end();
 	});
 
 	// Signup - Merchant clicked install, start the authentication process
@@ -208,7 +209,7 @@ var init = function(app, config) {
 			config.session.active.product.all({}, function(err, products){
 				if(err) callback(err);
 				else {
-					// logger.log('products:',products);
+					logger.log('products:',products);
 					callback(null, products);
 				}
 			});
