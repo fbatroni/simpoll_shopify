@@ -116,23 +116,23 @@ var PreferenceSchema = new Schema({
 	},
 	messageSubject: {
 		type: String,
-		default: 'Review your recent purchase at {shop}'
+		default: 'Review your recent purchase at SHOP_NAME'
 	},
 	messageGreeting: {
 		type: String,
-		default: 'Hello {customer},'
+		default: 'Hello <customer>,'
 	},
 	messageBody: {
 		type: String,
-		default: 'Thank for your recent purchase on our store. We really appreciate it if you took a moment to tell us how you feel about the items.'
+		default: 'Thank for your recent purchase on our store. We will really appreciate it if you took a moment to tell us how you feel about the items.'
 	},
 	messageSignature: {
 		type: String,
-		default: 'We really appreciate your feedback and hope to see you again soon.<br />Thank you from {Shop name}'
+		default: 'We appreciate your feedback and hope to see you again soon. Thank you.'
 	},
 	showAsSentFrom: {
 		type: String,
-		default: 'customerlove@shop.com'
+		default: 'customer_care@shop.com'
 	},
 	publishToShop: {
 		type: Boolean,

@@ -14,25 +14,17 @@ var Priest 		= require('./cron_job').init;
 // IMPORT logger
 var LOGGER = require('../helpers/logger').logger;
 var logger = new LOGGER({location:"cron_tab.js -> "});
+
 // TURN ON LOGGING
 logger.on();
 
 
 
 // LOAD JOBS
-var FetchOrders = require('./jobs/fetch_orders').init,
-	SendReviews	= require('./jobs/send_reviews').init;
-
-
+var SendReviews	= require('./jobs/send_reviews').init;
 
 // INIT JOBS
 logger.log('Initializing cron jobs');
-
-var FetchOrdersJob = new Priest({
-	job_handle : FetchOrders,
-	name	   : "Fetch Orders",
-	desc 	   : "fetch orders from store"
-});
 
 var SendReviewsJob = new Priest({
 	job_handle : SendReviews,
@@ -42,5 +34,4 @@ var SendReviewsJob = new Priest({
 
 
 // START JOBS
-// FetchOrdersJob.start(1);
 SendReviewsJob.start(1);

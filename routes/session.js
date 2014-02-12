@@ -11,6 +11,7 @@ var Pass = require('../helpers/password'),
 	Shop = require('../model/shop'),
 	Product = require('../model/product'),
 	Customer = require('../model/customer'),
+	Order = require('../model/order'),
 	step = require('async');
 
 var init = function(app, config) {
@@ -34,7 +35,8 @@ var init = function(app, config) {
 				req.session.shop = {
 					name: theShop.name,
 					token: null,
-					url: null
+					url: null,
+					shopID: theShop._id
 				};
 				res.redirect('/signup/install')
 			}
@@ -103,14 +105,14 @@ var init = function(app, config) {
 				    placed_at: data.created_at,
 				    review_sceduled_for: reviewSendDate,
 				    reviewSent: false,
-				    customer: {},
+				    customer: '',
 				    products: shopifyProudctIDS,
 				    _shop: shop.name
 				  };
 
 				  // Fetch customer data for associating with this new order or
 				  // Save new customer if no existing customer matches
-				  Customer.byShopifyID(data.customer.id, function (err, customer) {
+				  Customer.findByShopifyID(data.customer.id, function (err, customer) {
 				    if (err) throw err;
 				    if (customer) { // Customer exists, so associate the new order with this customer
 				      order.customer = customer._id;
@@ -122,7 +124,7 @@ var init = function(app, config) {
 				    } else { // No match, Create new customer
 				      Customer.save(theCustomer, function (err, newCustomer) {
 				      if (err) throw err;
-				        order.customer = customer._id;
+				        order.customer = newCustomer._id;
 				        // Now save the order
 				        Order.save(order, function (err, savedOrder) {
 				          if (err) throw err;
@@ -137,9 +139,15 @@ var init = function(app, config) {
 
 
 
-		// res.statusCode = 200;
-		// res.end();
+		res.statusCode = 200;
+		res.end();
 	});
+
+	// app.post('/reviews/:order_id', function(req, res) {
+	// 	console.log('review', req.params.order_id, req.body);
+	// 	res.statusCode = 200;
+	// 	res.end();
+	// });
 
 	// Signup - Merchant clicked install, start the authentication process
 	app.post('/signup/install', authenticate);
@@ -176,7 +184,8 @@ var init = function(app, config) {
 				req.session.shop = {
 					name: _shop.name,
 					token: _shop.token,
-					url: _shop.url
+					url: _shop.url,
+					shopID: _shop._id
 				};
 				res.redirect('/');
 			}
@@ -256,7 +265,7 @@ var init = function(app, config) {
 				 			Shop.saveProducts(shop, savedProducts, function (err) {
 				 				if (err) res.send('Error updating Shop with products');
 				 				else {
-				 					res.redirect('/preferences/new');
+				 					res.redirect('/preferences');
 				 				}
 				 			});
 				 		}

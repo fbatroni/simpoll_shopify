@@ -103,7 +103,7 @@ function daysToWait(shopName, callback) {
 						if (err) callback(err);
 						else callback(null, preferences.leadTime);
 					} catch(err2) {
-						logger.log("Exception: leadTime not ready", err);
+						logger.log("Exception: leadTime not ready", err2.stack);
 					}
 				})
 			}

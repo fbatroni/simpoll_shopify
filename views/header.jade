@@ -6,7 +6,7 @@
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand(href='#') 
+      a.navbar-brand(href='/')
         | Simp
         i.fa.fa-smile-o.simpoll-brand-face
         | ll
@@ -27,21 +27,31 @@
             ul.dropdown-menu
               li.dropdown-header Admin
               li
-                a(href='#{shop.url}')
+                a(href='http://#{shop.url}' target='_blank')
                   i.fa.fa-home
                   | &nbsp;StoreFront
               li
-                a(href='#{shop.url}/admin') 
+                a(href='http://#{shop.url}/admin' target='_blank')
                   i.fa.fa-cog
                     | &nbsp;StoreAdmin
               li.divider
+              li.dropdown-header Products
+              li
+                a(href='/update_products')
+                  i.fa.fa-refresh
+                    | &nbsp;Update
+              li
+                a(href='/delete_products')
+                  i.fa.fa-times
+                    | &nbsp;Delete all
+              li.divider
               li.dropdown-header Subscriptions
               li
-                a(href='/plans') 
+                a(href='/plans')
                   i.fa.fa-shopping-cart
                     | &nbsp;Plans
               li
-                a(href='/faqs') 
+                a(href='/faqs')
                   i.fa.fa-question-circle
                     | &nbsp;FAQs
               li.divider

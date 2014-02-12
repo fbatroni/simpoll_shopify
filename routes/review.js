@@ -87,7 +87,7 @@ var init = function(app, config) {
 						products: productStats
 					});
 				}
-			});	
+			});
 		} else {
 			res.redirect('/');
 		}
@@ -124,17 +124,29 @@ var init = function(app, config) {
 						product: product
 					});
 				}
-			});	
+			});
 		} else {
 			res.redirect('/');
 		}
 	});
 
 	// delte me, just testint email functionality
-	app.post('/reviews/:order/new', function (req, res) {
-		setTimeout(function () {
-			res.redirect('http://stopify-2.myshopify.com/products/nike-sneakers');
-		}, 5000);
+	app.post('/reviews/:order', function (req, res) {
+		var product_reviews = [];
+		var form_data = req.body;
+
+		var shopName   = form_data['shop_name'];
+		var customerID = form_data['customer_id'];
+
+		var keys = Object.keys(form).splice(2);
+
+
+		for (key in keys) {
+			console.log(key);
+		}
+
+		res.statusCode = 200;
+		res.end();
 	});
 }
 

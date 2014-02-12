@@ -12,12 +12,12 @@ block content
       .col-lg-12
         h1(style='text-align: center; color: #16AD1C;') Customize your preferences.
       .col-lg-12.viewport
-        form(role='form', name='preferences_form', action='/preferences/new', method='POST')
+        form(role='form', name='preferences_form', action='/preferences', method='POST')
           .col-lg-12.email
             .header
               h1.header-text
                 i.fa.fa-envelope-o.icon
-                | Post-Purchase Email Settings
+                |   Post-Purchase Email Settings
             .body
                 .row.mail-headers
                   .col-xs-12.col-sm-12.col-md-3.lead-time
@@ -32,6 +32,7 @@ block content
                 .row.mail-body
                   .form-group.message-greeting
                     label(for='') Message Greeting
+                    | &nbsp; &lt;customer&gt; will be replaced with customer's name
                     input.form-control(name='messageGreeting', type='text', value='#{preferences.messageGreeting}')
                   .form-group.message-body
                     label(for='') Message Body
@@ -75,8 +76,4 @@ block content
                         input(name='notifyByMail', type='checkbox', value='yes')
                         | Notify me by mail when a new review is submitted
                   button.btn.btn-info.save-changes(type='submit') Save Changes
-    .footer
-      .col-lg-6.copyright
-        div © 2013 PayButtonAfrica.
-      .col-lg-6.navup.align-right
-        a(href='#') Back to top
+    include footer

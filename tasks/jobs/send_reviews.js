@@ -22,15 +22,17 @@ var jade = require('jade');
 // IMPORT logger
 var LOGGER = require('../../helpers/logger').logger;
 var logger = new LOGGER({location:"send_reviews.js -> "});
+
 // TURN ON LOGGING
 logger.on();
 
 
 
-// god objcet
+// god object
 var Everest = {
 
 	crawl_orders	: function (callback) {
+		logger.log('crawling orders');
 
     	get_orders(function (err, orders) {
 			if (err) callback(err);
@@ -39,13 +41,13 @@ var Everest = {
 	},
 
 	filter_orders	: function (orders, callback) {
-		var t_d   = new Date ();
+		var today_fullDate   = new Date ();
 
 		function filter (order, callback) {
-			var o_d   = new Date ( order.review_sceduled_for.toString() ),
+			var schedule_date_full   = new Date ( order.review_sceduled_for.toString() ),
 
-			    toDay = new Date ( t_d.getFullYear(), t_d.getMonth(), t_d.getDate() ),
-			    sched = new Date ( o_d.getFullYear(), o_d.getMonth(), o_d.getDate() );
+			    toDay = new Date ( today_fullDate.getFullYear(), today_fullDate.getMonth(), today_fullDate.getDate() ),
+			    sched = new Date ( schedule_date_full.getFullYear(), schedule_date_full.getMonth(), schedule_date_full.getDate() );
 
 			// if (toDay >= sched && !order.reviewSent && order.fulfillment_status) callback(true);
 		    if ( toDay >= sched && !order.reviewSent ) callback(true);
@@ -116,7 +118,6 @@ var Everest = {
 			});
 
 		};
-
 	},
 
 };

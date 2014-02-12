@@ -7,28 +7,68 @@ var Webhook     = require('../tasks/jobs/create_webhooks'),
 
 var init = function(app, config) {
 	// New Merchant - Show defaulted preferences form
-	app.get('/preferences/new', function (req, res) {
-		res.render('preferences', {
-			title: 'Simpoll Reviews - Set your preferences',
-			shop: req.session.shop,
-			preferences: {
-				leadTime: 14,
-				messageSubject: 'Review your recent purchase at {shop}',
-				messageGreeting: 'Hello {customer},',
-				messageBody: 'Thank for your recent purchase on our store. We really appreciate it if you took a moment to tell us how you feel about the items.',
-				messageSignature: 'We really appreciate your feedback and hope to see you again soon.<br />Thank you from {Shop name}',
-				showAsSentFrom: 'customerlove@shop.com',
-				publishToShop: true,
-				notifyByMail: true
-			}
-		});
+	app.get('/preferences', function (req, res) {
+
+		if (req.session.shop) {
+			var shopID   = req.session.shop.shopID,
+				shopName = req.session.shop.name;
+
+			Preferences.findByShop(shopID, function(err, preference) {
+				if (err) throw err;
+				else {
+					if (!preference) {
+						Preferences.save({}, shopName, function(err, saved_preference) {
+
+							step.waterfall([
+							    function(callback){
+							    	Shop.findByName(shopName, function (err, shop) {
+							    		if (err) callback(err);
+							    		else callback(null, shop);
+							    	});
+							    },
+							    function(shop, callback){
+							        Shop.savePreferences(shop, saved_preference, function (err) {
+										if (err) callback(new Error('Error saving preferences.'));
+										else callback(null);
+									});
+							    }
+							], function (err) {
+							   	if (err) console.log("error when saving new pref to shop: ", err);
+							});
+
+							res.render('preferences', {
+								title: 'Simpoll Reviews - Set your preferences',
+								shop: req.session.shop,
+								preferences: saved_preference
+							});
+						});
+					} else {
+						res.render('preferences', {
+							title: 'Simpoll Reviews - Set your preferences',
+							shop: req.session.shop,
+							preferences: preference
+						});
+					}
+
+				}
+			});
+		} else {
+			res.send('you are not logged in <br> click <a href="/login">here</a> to login');
+		}
+
 	});
 
 	// New Merchant - Form submitted, save preferences
-	app.post('/preferences/new', function (req, res) {
+	app.post('/preferences', function (req, res) {
 		// Grab preferences
-		var preference 	= req.body,
-			shopName 	= req.session.shop.name;
+		if (req.session.shop) {
+			var preference 	= req.body,
+				shopName 	= req.session.shop.name,
+				shopID 		= req.session.shop.shopID;
+		} else {
+			res.send('Session expired! Please <a href="/login">login</a> to continue');
+			return;
+		}
 
 		// Convert publish and notify fields to booleans
 		preference.publishToShop = (preference.publishToShop == 'yes') ?
@@ -36,8 +76,7 @@ var init = function(app, config) {
 		preference.notifyByMail = (preference.notifyByMail == 'yes') ?
 									true : false;
 
-		// Save the preferences
-		Preferences.save(preference, shopName, function (err, pref) {
+		Preferences.findAndUpdate(shopID, preference, function(err, saved_preference) {
 			if (err) res.send('an error occurred');
 			else {
 				step.waterfall([
@@ -48,7 +87,7 @@ var init = function(app, config) {
 				    	});
 				    },
 				    function(shop, callback){
-				        Shop.savePreferences(shop, pref, function (err) {
+				        Shop.savePreferences(shop, saved_preference, function (err) {
 							if (err) callback(new Error('Error saving preferences.'));
 							else callback(null);
 						});
@@ -57,10 +96,10 @@ var init = function(app, config) {
 				   	if (err) res.send(err.message);
 				  	else {
 				  		Webhook.install(req.session.shop, function (err, data, invalidSession) {
-				  			// if (err) res.send('Oops. Something went wrong! : '+ err);
 				  			if (err) {
-				  				console.log("Something's not right! Probably a webhook exists already for the stated topic");
-				  				res.send('click <a href="/">here</a> to go home');
+				  				// console.log("Something's not right! Probably a webhook exists already for the stated topic");
+				  				// res.send('click <a href="/">here</a> to go home');
+				  				res.redirect('/');
 							}
 				  			else {
 				  				if (invalidSession) res.redirect('/login');
@@ -85,9 +124,10 @@ var init = function(app, config) {
 
 				  	}
 				});
-			}
+			} // end else
 		});
-	});
+
+	}); // end app.post
 }
 
 exports.init = init;

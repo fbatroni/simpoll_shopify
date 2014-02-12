@@ -76,15 +76,18 @@ function emailInfo(order, callback) {
 		if (err) callback(err);
 		else {
 			info.orderID = order._id;
+			info.shopifyOrderID = order.id;
 			info.shop = shop.name;
 			info.emailSubject = preferences.messageSubject;
 			info.emailBody = preferences.messageBody;
 			info.emailSignature = preferences.messageSignature;
 			info.sentFrom = preferences.showAsSentFrom;
+			info.messageGreeting = preferences.messageGreeting.replace('<customer>', customer.firstName);
 			info.customer = {
 				firstName: customer.firstName,
 				lastName: customer.lastName,
-				email: customer.email
+				email: customer.email,
+				customer_id: customer._id
 			};
 			info.products = products;
 			callback(null, info);
