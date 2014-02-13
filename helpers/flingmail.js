@@ -11,8 +11,7 @@
 
 
 // GET CONFIG FILE AND RETRIEVE MANDRILL API KEY
-var config = require ('../config.json');
-var apiKey = config.mandrill_api_key;
+var mandrill_api_key = process.env.MANDRILL_API_KEY;
 
 // MAKE THE MANDRILL MODULE AVAILABLE AND CREATE INSTANCE
 var mandrill        = require('mandrill-api/mandrill');
@@ -28,7 +27,7 @@ logger.on();
 function Mailer(_args) {
 
 	// INIT MANDRIL CLIENT OBJECT
-	this.m_client = new mandrill.Mandrill(apiKey);
+	this.m_client = new mandrill.Mandrill(mandrill_api_key);
 
 	// ASSIGN CALLBACKS
 	this.usr_def_fail = _args.fail;
