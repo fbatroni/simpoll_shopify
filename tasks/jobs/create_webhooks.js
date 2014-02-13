@@ -14,6 +14,7 @@ logger.on();
  //if(process.env.SHOPIFY_API_KEY != undefined && process.env.SHOPIFY_SECRET != undefined){
   apiKey = process.env.SHOPIFY_API_KEY;
   secret = process.env.SHOPIFY_SECRET;
+  url    = process.env.URL || "http://simpoll.ngrok.com";
 // }
 // else {
 //   var config = require ('../../config.json');
@@ -35,7 +36,7 @@ exports.install = function install(shop, callback) {
 
 		session.webhook.create ({
 			"topic" : "orders/fulfilled",
-			"address": "http://simpoll.ngrok.com/new_order",
+			"address": url + "/new_order",
 			"format" : "json"
 		}, function(err, data) {
       if (err) callback(err);
