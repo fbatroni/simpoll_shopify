@@ -11,15 +11,15 @@ logger.on();
 
 // Set Api Key & Secret
 //If Heroku or Foreman
- if(process.env.SHOPIFY_API_KEY != undefined && process.env.SHOPIFY_SECRET != undefined){
+ //if(process.env.SHOPIFY_API_KEY != undefined && process.env.SHOPIFY_SECRET != undefined){
   apiKey = process.env.SHOPIFY_API_KEY;
   secret = process.env.SHOPIFY_SECRET;
-}
-else {
-  var config = require ('../../config.json');
-  apiKey     = config.apiKey;
-  secret     = config.secret;
-} // Key & Secret Set
+// }
+// else {
+//   var config = require ('../../config.json');
+//   apiKey     = config.apiKey;
+//   secret     = config.secret;
+// } // Key & Secret Set
 
 
 
